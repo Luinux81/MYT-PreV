@@ -1,6 +1,7 @@
 <?php
 
 include_once "./config.php";
+include_once "../config.php";
 
 if (!defined('LOG')) define('LOG', './ipn.log');
 define ("DEBUG_SQL",0);
@@ -20,9 +21,9 @@ class Tool{
      * @return bool|resource Devuelve un enlace a la base de datos o false en caso de error.
      */
     public function conectaBD(){
-		$link=mysql_connect(BD_URL,BD_USUARIO,BD_PASS);		
-		
-		if(!$link){
+		$link=mysql_connect(BD_URL,BD_USUARIO,BD_PASS);
+
+        if(!$link){
 			$this->loglinea("Error en la conexión a la base de datos" . PHP_EOL . mysql_errno($link) . ":" . mysql_error($link),LOG);				
 			return false;
 		}

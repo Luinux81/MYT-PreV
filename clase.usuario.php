@@ -30,25 +30,29 @@ class Usuario {
         return $u;
     }
 
-    public static function loginValido($username,$pass){
+    public static function loginValido($name,$pass){
         $t=new Tool();
         $db=$t->conectaBD();
 
-        $sql="SELECT * FROM Usuarios WHERE Nombre='" . $username ."'";
+        $sql="SELECT * FROM Usuarios WHERE Nombre='" . $name ."'";
 
         $res=$t->consulta($sql,$db);
 
-        $storedpass=$res[0]['Pass'];
-
-        $t->desconectaBD($db);
-
-        if(count($res)<1){
-            return false;
+        if(is_null($res)){
+            $aux=false;
         }
         else{
-            return $pass==$storedpass;
+            if(count($res)>0){
+                $storedpass=$res[0]['Pass'];
+                $aux=($pass==$storedpass);
+            }
+            else{
+                $aux=false;
+            }
         }
+
+        $t->desconectaBD($db);
+        return $aux;
+
     }
-
-
 } 

@@ -6,6 +6,8 @@
  * Time: 12:47
  */
 
+session_start();
+
 if(isset($_SESSION["username"])){
     //cabecera y menu izquierdo
     echo "<div style='width: 100%;text-align: left;background-color: #983030;position: absolute;top: 0px;left: 0px; padding-left: 10px;'>
@@ -19,13 +21,11 @@ if(isset($_SESSION["username"])){
         <a href='./tickets.php?pass=admin'>Tickets</a><br>
     </div>
     ";
-
-    echo "";
 }
 else{
     header("Location:login.php");
 }
-    
+
 
 
 ?>
