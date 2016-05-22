@@ -292,12 +292,12 @@ public function entregaTicket(){
 }
 */
 
-public static function listadoTickets(){
+public static function listadoTickets($filtro="1"){
     $t=new Tool();
     $db=$t->conectaBD();
 
 
-    $sql="SELECT * FROM Tickets";
+    $sql="SELECT * FROM Tickets WHERE " . $filtro;
 
     $res=$t->consulta($sql,$db);
 

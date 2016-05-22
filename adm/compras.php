@@ -11,7 +11,6 @@ include_once "../clase.tool.php";
 
 $err=$_GET['err'];
 $res=$_GET['res'];
-$auth=$_GET['pass'];
 
 session_start();
 
@@ -25,21 +24,37 @@ if(isset($_SESSION["username"])){
     <h1 style='float: left;padding-left: 10px;'>Gesti&oacute;n de entradas anticipadas</h1>
     </div>
     <div style='width: 215px;text-align: left;background-color: #708e8b;position: absolute;top: 90px;left: 10px; padding-left: 10px;'>
-        <a href='./compradores.php?pass=admin'>Compradores</a><br>
-        <a href='./compras.php?pass=admin'>Compras</a><br>
-        <a href='./tickets.php?pass=admin'>Tickets</a><br>
+        <a href='./compradores.php'>Compradores</a><br>
+        <a href='./compras.php'>Compras</a><br>
+        <a href='./tickets.php'>Tickets</a><br>
     </div>
     ";
 
     echo "<div style='position: absolute;top: 70px;left: 250px;'>";
     $c=new Compra();
-    $lista=$c->listadoCompras("");
+    $lista=$c->listadoCompras($_SESSION["Filtro"]);
 
 
+    echo "<h1>Compras</h1>
+            <form action='./filtro.php' name='filtro_compras' method='post'>
+                <select name='NombreParametro'>
+                    <option>Id</option>
+                    <option>Email</option>
+                    <option>Fecha</option>
+                    <option>Cantidad</option>
+                    <option>Importe</option>
+                </select>
+                <input type='text' name='Parametro'>
+                <input type='submit' name='Filtrar'>
+                <input type='hidden' name='origen' value='compras'>
+            </form>";
 
-
-    echo "<h1>Compras</h1>";
-    echo "<h3>Listado completo</h3>";
+    if($_SESSION["Filtro"]=="" || $_SESSION["Filtro"]=="1"){
+        echo "<h3>Listado completo</h3>";
+    }else{
+        echo "<h3>Listado filtrado</h3>";
+        $_SESSION["Filtro"]="1";
+    }
 
     if ($err!=""){
         echo "<div style='width: 100%;background-color: #AA0000;'> " . $err . "</div>";

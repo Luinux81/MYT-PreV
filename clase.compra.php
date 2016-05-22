@@ -134,7 +134,7 @@ class Compra{
 	}
 
 
-    public function listadoCompras($orden){
+    public function listadoCompras($filtro="1"){
         $t=new Tool();
         $db=$t->conectaBD();
 
@@ -142,7 +142,7 @@ class Compra{
             //error
         }
         else{
-            $sql="SELECT * FROM Compras";
+            $sql="SELECT * FROM Compras WHERE " . $filtro;
             $res=$t->consulta($sql,$db);
             $t->desconectaBD($db);
 
