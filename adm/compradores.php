@@ -39,8 +39,8 @@ if(isset($_SESSION["username"])){
     echo "<h1>Compradores</h1>
           <form action='./filtro.php' name='filtro_compradores' method='post'>
             <select name='NombreParametro'>
-                <option>Nombre</option>
                 <option>Email</option>
+                <option>Nombre</option>
             </select>
             <input type='text' name='Parametro'>
             <input type='submit' name='Filtrar'>
@@ -78,7 +78,7 @@ if(isset($_SESSION["username"])){
     echo "<table><tr><th>#</th><th>Nombre</th><th>Apellidos</th><th>Email</th><th></th></tr>";
     foreach($lista as $l){
         $i=$i+1;
-        $aux= $aux . "<tr style='background-color:" . $aux2 . ";'><td>" . $i . "</td><td>" . $l['Nombre']  . "</td>" . "<td>" . $l['Apellidos']  . "</td>" . "<td>" . $l['Email']  . "</td>";
+        $aux= $aux . "<tr style='background-color:" . $aux2 . ";'><td>" . $i . "</td><td>" . $l['Nombre']  . "</td>" . "<td>" . $l['Apellidos']  . "</td>" . "<td><a href='./filtro.php?origen=compras&Parametro=" . $l['Email']  . "&NombreParametro=Email'>" . $l['Email']  . "</a></td>";
         $aux =$aux . "<td><a href='./editComprador.php?id=" . $l['Email'] . "&pass=admin'><img src='png/editar.png'>Editar</a>
         <a href='./accion.delComprador.php?id=" . $l['Email'] . "&pass=admin'><img src='png/borrar.png'>Borrar</a></td></tr>";
 

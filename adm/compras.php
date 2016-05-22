@@ -80,7 +80,7 @@ if(isset($_SESSION["username"])){
 
         $i=$i+1;
 
-        $aux= $aux . "<tr style='background-color:" . $aux2 . ";'><td>" . $i . "</td><td><a href='./muestraTicket.php?code=" .$l['Id'] . "&pass=admin'>" . $l['Id']  . "</a></td>" . "<td>" . $l['IdComprador']  . "</td>" . "<td>" . $l['Fecha']  . "</td>" . "<td>" . $l['Cantidad']  . "</td>" . "<td>" . $l['Importe']  . "</td>";
+        $aux= $aux . "<tr style='background-color:" . $aux2 . ";'><td>" . $i . "</td><td><a href='./muestraTicket.php?code=" .$l['Id'] . "'>" . $l['Id']  . "</a></td>" . "<td>" . $l['IdComprador']  . "</td>" . "<td>" . $l['Fecha']  . "</td>" . "<td>" . $l['Cantidad']  . "</td>" . "<td>" . $l['Importe']  . "</td>";
         $aux =$aux . "<td><a href='./editCompras.php?id=" . $l['Id'] . "&pass=admin'><img src='png/editar.png'>Editar</a>
         <a href='./accion.delCompra.php?id=" . $l['Id'] . "&pass=admin'><img src='png/borrar.png'>Borrar</a>
         <a href='./addTicket.php?id=" . $l['Id'] . "&pass=admin'><img src='png/addTicket.png'>A&ntilde;adir tickets</a>

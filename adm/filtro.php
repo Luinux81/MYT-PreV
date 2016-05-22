@@ -11,11 +11,22 @@
 //Si incluimos el archivo clase.tool.php se envian cabeceras desde config.php y la llamada final a header da error
 //include_once "../clase.tool.php";
 
-//Definimos parámetros para el filtro
-$origen=$_POST["origen"];
-//$param=Tool::limpiaCadena($_POST["Parametro"]);
-$param=$_POST["Parametro"];
-$columna=$_POST["NombreParametro"];
+//Detectamos si los parámetros del filtro llegan por POST o GET y definimos las variables para el filtro
+
+if(isset($_POST["origen"])){
+    $origen=$_POST["origen"];
+    //$param=Tool::limpiaCadena($_POST["Parametro"]);
+    $param=$_POST["Parametro"];
+    $columna=$_POST["NombreParametro"];
+}
+else{
+    if(isset($_GET["origen"])){
+        $origen=$_GET["origen"];
+        //$param=Tool::limpiaCadena($_POST["Parametro"]);
+        $param=$_GET["Parametro"];
+        $columna=$_GET["NombreParametro"];
+    }
+}
 
 //Variable de salida
 $res="";
