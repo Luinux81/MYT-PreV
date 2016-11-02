@@ -41,3 +41,8 @@ Thumbs.db
 .project
 .settings
 .buildpath
+
+# Especificos del proyecto #
+############################
+config.php
+
