@@ -7,16 +7,16 @@ if (!defined('LOG')) define('LOG', './ipn.log');
 define ("DEBUG_SQL",0);
 
 /**
- * Clase con funciones √∫tiles para el resto de clases
+ * Clase con funciones ˙tiles para el resto de clases
  *
- * La clase Tool agrupa funciones de conexi√≥n y consulta a base de datos; para log de errores; envio de notificaciones y tickets por email.
+ * La clase Tool agrupa funciones de conexiÛn y consulta a base de datos; para log de errores; envio de notificaciones y tickets por email.
  */
 class Tool{
 
 	public $mensaje;
 
     /**
-     * Funci√≥n para conectar a la base de datos de la aplicaci√≥n.
+     * FunciÛn para conectar a la base de datos de la aplicaciÛn.
      *
      * @return bool|resource Devuelve un enlace a la base de datos o false en caso de error.
      */
@@ -24,7 +24,7 @@ class Tool{
 		$link=mysql_connect(BD_URL,BD_USUARIO,BD_PASS);
 
         if(!$link){
-			$this->loglinea("Error en la conexi√≥n a la base de datos" . PHP_EOL . mysql_errno($link) . ":" . mysql_error($link),LOG);				
+			$this->loglinea("Error en la conexiÛn a la base de datos" . PHP_EOL . mysql_errno($link) . ":" . mysql_error($link),LOG);				
 			return false;
 		}
 		else{
@@ -37,7 +37,7 @@ class Tool{
 	}
 
     /**
-     * Funci√≥n para cerrar un enlace con la base de datos de la aplicaci√≥n.
+     * FunciÛn para cerrar un enlace con la base de datos de la aplicaciÛn.
      *
      * @param $link Enlace a la base de datos.
      */
@@ -46,12 +46,12 @@ class Tool{
     }
 
     /**
-     * Funci√≥n para la ejecuci√≥n de consultas SELECT sobre la base de datos.
+     * FunciÛn para la ejecuciÛn de consultas SELECT sobre la base de datos.
      *
      * @param $sql Cadena de consulta SQL
-     * @param $db Enlace a la base de datos sobre la que se realizar√° la consulta.
-     * @param int $indiceArray Tipo de √≠ndice del array que devuelve la funci√ßon. Por defecto MYSQL_BOTH, puede ser MYSQL_BOTH, MYSQL_NUM o MYSQL_ASSOC.
-     * @return array|bool Devuelve un array con todos los registros de la base de datos resultantes de la consulta SQL pasada como par√°metro o false en caso de error.
+     * @param $db Enlace a la base de datos sobre la que se realizar· la consulta.
+     * @param int $indiceArray Tipo de Ìndice del array que devuelve la funciÛn. Por defecto MYSQL_BOTH, puede ser MYSQL_BOTH, MYSQL_NUM o MYSQL_ASSOC.
+     * @return array|bool Devuelve un array con todos los registros de la base de datos resultantes de la consulta SQL pasada como par·metro o false en caso de error.
      */
     public function consulta($sql,$db,$indiceArray=MYSQL_BOTH){
 		$res = mysql_query($sql,$db);
@@ -84,10 +84,10 @@ class Tool{
 	}
 
     /**
-     * Funci√≥n para la ejecuci√≥n de consultas sobre la base de datos que no devuelven un conjunto de registros como resultado (UPDATE, INSERT o DELETE).
-     * @param $sql Cadena de instrucci√≥n SQL.     *
+     * FunciÛn para la ejecuciÛn de consultas sobre la base de datos que no devuelven un conjunto de registros como resultado (UPDATE, INSERT o DELETE).
+     * @param $sql Cadena de instrucciÛn SQL.     
      * @param $db Enlace a la base de datos sobre la que se ejecuta la consulta.
-     * @return bool Devuelve true en caso de ejecuci√≥n correcta y false en caso de error.
+     * @return bool Devuelve true en caso de ejecuciÛn correcta y false en caso de error.
      */
     public function ejecuta($sql,$db){
 		$res=mysql_query($sql);	
@@ -102,26 +102,26 @@ class Tool{
 	}
 
     /**
-     * Esta funci√≥n escribe una entrada con fecha en el archivo de log pasado como par√°metro
-     * @param $linea Cadena de texto que se escribir√° en el archivo.
-     * @param $file Archivo en el que se escribir√° la l√≠nea.
+     * Esta funciÛn escribe una entrada con fecha en el archivo de log pasado como par·metro
+     * @param $linea Cadena de texto que se escribir· en el archivo.
+     * @param $file Archivo en el que se escribir· la lÌnea.
      */
     public function loglinea($linea,$file){
 		error_log(date('[d/m/Y H:i]') . " " . $linea . PHP_EOL, 3, $file);
 	}
 
     /**
-     * Versi√≥n est√°tica de la funci√≥n loglinea. Escribe una entrada con fecha en el archivo de log pasado como par√°metro.
-     * @param $linea Cadena de texto que se escribir√° en el archivo.
-     * @param $file Archivo en el que se escribir√° la l√≠nea.
+     * VersiÛn est·tica de la funciÛn loglinea. Escribe una entrada con fecha en el archivo de log pasado como par·metro.
+     * @param $linea Cadena de texto que se escribir· en el archivo.
+     * @param $file Archivo en el que se escribir· la lÌnea.
      */
     public static function log($linea,$file){
         error_log(date('[d/m/Y H:i]') . " " . $linea . PHP_EOL, 3, $file);
     }
 
     /**
-     * Esta funci√≥n recibe como par√°metro un objeto Compra, a partir del c√∫al genera un archivo PDF con los tickets correspondientes y los envia adjuntos en un email. Registra en el archivo de log el resultado del envio de cada email.
-     * @param $resultado Este par√°metro no se usa.
+     * Esta funciÛn recibe como par·metro un objeto Compra, a partir del cual genera un archivo PDF con los tickets correspondientes y los envia adjuntos en un email. Registra en el archivo de log el resultado del envio de cada email.
+     * @param $resultado Este par·metro no se usa.
      * @param $compra Objeto compra con todos los datos. (NO SE VERIFICA QUE EL OBJETO TENGA LOS DATOS CORRECTOS)
      */
     public function notificaMAIL($resultado,$compra){
@@ -289,7 +289,7 @@ class Tool{
     }
 
     /**
-     * Funci√≥n para evitar inyecci√≥n de cadenas SQL maliciosas.
+     * FunciÛn para evitar inyecciÛn de cadenas SQL maliciosas.
      * @param $valor Cadena SQL que se va a sanear.
      * @return mixed Cadena SQL saneada.
      */

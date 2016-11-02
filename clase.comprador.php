@@ -84,14 +84,14 @@ class Comprador{
 		}
 	}
 	
-	public function listadoCompradores($filtro="1"){
+	public function listadoCompradores(){
 		$t=new Tool();
 		$db=$t->conectaBD();
 		if(!db){
 		//error
 		}
 		else{
-			$sql="SELECT * FROM Compradores WHERE " . $filtro;
+			$sql="SELECT * FROM Compradores";
 			$res=$t->consulta($sql,$db);
 			$t->desconectaBD($db);
 			
