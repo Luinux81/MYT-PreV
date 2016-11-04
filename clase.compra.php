@@ -54,23 +54,23 @@ class Compra{
 	
 	public function compraRegistrada(){
 		$t=new Tool();		
-		$db=$t->conectaBD();
+		$db=Tool::conectaBD();
 		if(!$db){
             Tool::log("[ERROR] Error conectando a la base de datos buscando registro de compra" . PHP_EOL . mysql_errno . " : " . mysql_error($db),LOG);
 		}
 		else{
 			$sql="SELECT * FROM Compras WHERE Id='" . $this->id_transaccion . "'";
-			$res=$t->consulta($sql,$db);			
+			$res=Tool::consulta($sql,$db);			
 			
 			$aux=mysql_affected_rows();
 			
 			if($aux<0){
                 Tool::log("[ERROR] Error ejecutando consulta buscando registro de compra" . PHP_EOL . mysql_errno . ":" . mysql_error($db),LOG);
-				$t->desconectaBD($db);			
+                Tool::desconectaBD($db);			
 				return "-1";			
 			}
 			else{
-				$t->desconectaBD($db);
+				Tool::desconectaBD($db);
 				if($aux==0){
 					return false;					 
 				}
@@ -84,9 +84,21 @@ class Compra{
 		}
 	}
 	
+	public static function estaArchivada($id){
+		$db=Tool::_conectaBD();
+		
+		$sql="SELECT * FROM HistoricoCompras WHERE Id='" . $id ."'";
+		$res=Tool::ejecutaConsulta($sql, $db);
+		
+		$aux=mysqli_affected_rows($db);
+		
+		Tool::_desconectaBD($db);
+		
+		return ($aux>0);
+	}
+	
 	public function registraCompra($autoTickets=true){
-		$t=new Tool();
-		$db=$t->conectaBD();
+		$db=Tool::conectaBD();
 		if(!$db){
 			return false;
 		}
@@ -98,13 +110,13 @@ class Compra{
 				Tool::log("SQL: " . $sql,LOG);
 			}
 			
-			$res=$t->ejecuta($sql,$db);
+			$res=Tool::ejecuta($sql,$db);
 			//Aqui control de error de la consulta, logear
 
             if($autoTickets){
                 for($i=0;$i<$this->cantidad;$i++){
                     $sql="INSERT INTO Tickets (IdCompra,Codigo,IdTipo) VALUES ('" . $this->id_transaccion . "','" . $this->id_transaccion . $i . "','" . $this->item_id . "')";
-                    $res=$t->ejecuta($sql,$db);
+                    $res=Tool::ejecuta($sql,$db);
                 }
             }
 
@@ -115,7 +127,7 @@ class Compra{
             }
 			*/
 			
-			$t->desconectaBD($db);
+            Tool::desconectaBD($db);
 			
 			if(DEBUG_CLASES){
                 Tool::log("RES: " . $res,LOG);
@@ -135,26 +147,24 @@ class Compra{
 
 
     public function listadoCompras($filtro="1"){
-        $t=new Tool();
-        $db=$t->conectaBD();
+        $db=Tool::_conectaBD();
 
-        if(!db){
+        if(!$db){
             //error
         }
         else{
             $sql="SELECT * FROM Compras WHERE " . $filtro;
-            $res=$t->consulta($sql,$db);
-            $t->desconectaBD($db);
+            $res=Tool::ejecutaConsulta($sql,$db);
+            Tool::_desconectaBD($db);
 
             return $res;
         }
     }
 
     public function getCompra($id){
-        $t=new Tool();
-        $db=$t->conectaBD();
+        $db=Tool::conectaBD();
 
-        if(!db){
+        if(!$db){
             $this->id_transaccion="";
             $this->email_comprador="";
             $this->email_vendedor="";
@@ -166,8 +176,8 @@ class Compra{
             $id=Tool::limpiaCadena($id);
 
             $sql="SELECT * FROM Compras WHERE Id='" . $id . "'";
-            $res=$t->consulta($sql,$db);
-            $t->desconectaBD($db);
+            $res=Tool::consulta($sql,$db);
+            Tool::desconectaBD($db);
 
             if(!is_null($res[0])){
                 $this->id_transaccion=$res[0]['Id'];
@@ -196,12 +206,11 @@ class Compra{
     }
 
     public static function getTickets($id){
-        $t=new Tool();
         $tick=new Ticket();
 
-        $db=$t->conectaBD();
+        $db=Tool::conectaBD();
 
-        if(!db){
+        if(!$db){
 
         }
         else{
@@ -210,7 +219,7 @@ class Compra{
         INNER JOIN Tickets AS t ON c.Id=t.IdCompra
         WHERE c.Id='" . $id . "'";
 
-            $aux=$t->consulta($sql,$db);
+            $aux=Tool::consulta($sql,$db);
             $res=array();
             $i=0;
 
@@ -224,7 +233,7 @@ class Compra{
                 $res[$i]=$tick;
                 $i=$i+1;
             }
-            $t->desconectaBD($db);
+            Tool::desconectaBD($db);
 
             return $res;
         }
@@ -241,8 +250,7 @@ class Compra{
     }
 
     private static function addTicket($idCompra){
-        $t=new Tool();
-        $db=$t->conectaBD();
+        $db=Tool::conectaBD();
         $idCompra=Tool::limpiaCadena($idCompra);
 
         if($idCompra==""){
@@ -255,7 +263,7 @@ class Compra{
         else{
             $sql="SELECT * FROM Tickets WHERE IdCompra='" . $idCompra . "'";
             //$res=Compra::getTickets($idCompra);
-            $res=$t->consulta($sql,$db);
+            $res=Tool::consulta($sql,$db);
             $num=count($res);
 
             $nuevo_cod=$idCompra . $num;
@@ -263,9 +271,9 @@ class Compra{
             $sql="INSERT INTO Tickets(Codigo,IdCompra,IdTipo,Entregado) VALUES ('" .
                  $nuevo_cod ."','" . $idCompra . "','00002',0)";
 
-            $res=$t->ejecuta($sql,$db);
+            $res=Tool::ejecuta($sql,$db);
 
-            $t->desconectaBD($db);
+            Tool::desconectaBD($db);
 
             return $res;
         }
@@ -282,8 +290,7 @@ class Compra{
     }
 
     private static function deleteTicket($idCompra){
-        $t=new Tool();
-        $db=$t->conectaBD();
+        $db=Tool::conectaBD();
         $idCompra=Tool::limpiaCadena($idCompra);
 
         if($idCompra==""){
@@ -296,7 +303,7 @@ class Compra{
         else{
             $sql="SELECT * FROM Tickets WHERE IdCompra='" . $idCompra . "'";
             //$res=Compra::getTickets($idCompra);
-            $res=$t->consulta($sql,$db);
+            $res=Tool::consulta($sql,$db);
             $num=count($res)-1;
 
             if($num<0){
@@ -306,23 +313,21 @@ class Compra{
 
             $sql="DELETE FROM Tickets WHERE Codigo='" . $ultimo_cod . "'";
 
-            $res=$t->ejecuta($sql,$db);
+            $res=Tool::ejecuta($sql,$db);
 
 
-            $t->desconectaBD($db);
+            Tool::desconectaBD($db);
 
             return $res;
         }
     }
 
     public static function actualizaCantidad($idcompra){
-        $t=new Tool();
-
         if($idcompra==""){
             return false;
         }
 
-        $db=$t->conectaBD();
+        $db=Tool::conectaBD();
         $idcompra=Tool::limpiaCadena($idcompra);
 
         if(!$db){
@@ -331,11 +336,11 @@ class Compra{
 
         else{
             $sql="SELECT * FROM Tickets WHERE IdCompra='" . $idcompra . "'";
-            $res=$t->consulta($sql,$db);
+            $res=Tool::consulta($sql,$db);
             $num=count($res);
 
             $sql="SELECT * FROM Compras WHERE Id='" . $idcompra . "'";
-            $res=$t->consulta($sql,$db);
+            $res=Tool::consulta($sql,$db);
             if(count($res)>0){
                 $precio=$res[0]['Importe'];
                 $cantidad=$res[0]['Cantidad'];
@@ -343,21 +348,20 @@ class Compra{
                 $precio=($precio/$cantidad)*$num;
 
                 $sql="UPDATE Compras SET Cantidad='" . $num . "', Importe='" . $precio . "' WHERE Id='" . $idcompra . "'";
-                $res=$t->ejecuta($sql,$db);
+                $res=Tool::ejecuta($sql,$db);
             }
             else{
                 $res=false;
             }
 
-            $t->desconectaBD($db);
+            Tool::desconectaBD($db);
 
             return $res;
         }
     }
 
     public function updateCompra($nuevo_ID,$nuevo_email,$nueva_cantidad, $nuevo_importe,$idCompra){
-        $t=new Tool();
-        $db=$t->conectaBD();
+        $db=Tool::conectaBD();
         if(!db){
             //error
             $res=false;
@@ -374,18 +378,21 @@ class Compra{
             SET Id='" . $id . "',IdComprador='" . $email . "', Importe='" . $importe . "', Cantidad='" . $cantidad . "'
             WHERE Id='" . $idCompra . "'";
 
-            $res=$t->ejecuta($sql,$db);
+            $res=Tool::ejecuta($sql,$db);
 
-            $t->desconectaBD($db);
+            Tool::desconectaBD($db);
 
             return $res;
         }
     }
 
-    public function deleteCompra($id){
-        $t=new Tool();
-        $db=$t->conectaBD();
-        if(!db){
+    /**
+     * Función para borrar una compra de la tabla Compras.
+     * @param unknown $id Id de la compra.
+     */
+    public static function deleteCompra($id){
+        $db=Tool::_conectaBD();
+        if(!$db){
             //error
             $res=false;
         }
@@ -396,24 +403,23 @@ class Compra{
 
             $sql="DELETE FROM Compras WHERE Id='" . $id . "'";
 
-            $res=$t->ejecuta($sql,$db);
+            $res=Tool::ejecutaConsulta($sql,$db);
 
-            $t->desconectaBD($db);
+            Tool::_desconectaBD($db);
 
             return $res;
         }
     }
 
     public function getEvento($idTicket){
-        $t=new Tool();
-        $db=$t->conectaBD();
+        $db=Tool::conectaBD();
 
         if(!$db){
             return false;
         }
         else{
             $sql="SELECT IdEvento FROM TipoTicket WHERE Id='" . $idTicket . "'";
-            $res=$t->consulta($sql,$db);
+            $res=Tool::consulta($sql,$db);
 
             if(!is_null($res[0])){
                 return $res[0]['IdEvento'];
@@ -423,9 +429,57 @@ class Compra{
             }
         }
 
-        $t->desconectaBD($db);
+        Tool::desconectaBD($db);
     }
 
+    /**
+     * Función para mover una compra de la tabla Compras a HistoricoCompras. El registro desaparecerá de la tabla Compras.
+     * @param unknown $id Id de la compra.
+     */
+    public static function archivaCompra($id){
+    	$db=Tool::_conectaBD();
+    	$archivado=false;
+    	
+    	if(!$db){
+    		Tool::log("[ERROR] Error conectando a la base de datos archivando compra" . PHP_EOL . mysql_errno . ":" . mysql_error($db),LOG);
+    	}
+    	else{
+    		$c=new Compra();
+    		$c->getCompra($id);
+    	
+    		$sql="INSERT INTO HistoricoCompras (Id,IdVendedor,IdComprador,importe,fecha,cantidad,IdEvento)
+			VALUES ('" . $c->id_transaccion . "','" . $c->email_vendedor . "','" . $c->email_comprador . "','" 
+					. $c->precio . "','" . $c->fecha . "'," . $c->cantidad . ",'" . $c->id_evento . "')";    		
+    		
+    		    	
+    		if($c->id_transaccion<>""){
+    			if(!Compra::estaArchivada($c->id_transaccion)){
+    				if(Tool::ejecutaConsulta($sql, $db)){
+    					//echo "Compra " . $c->id_transaccion . " archivado<br/>";
+    					$archivado=true;
+    				}
+    				else{
+    					//echo "Error en la insercion del compra " . $c->id_transaccion . " -> " . mysqli_error($db) . "<br/>
+    					//	  SQL->" . $sql . "<br/><hr/>";
+    				}
+    			}
+    			else{
+    				$archivado=true;
+    				//echo "Compra " . $id . " ya esta archivado<br/>";
+    			}
+    		}
+    		else{
+    			//echo "Compra " . $id . " no encontrado<br/>";
+    		}
+    	
+    		if($archivado){
+    			Compra::deleteCompra($id);
+    		}
+    	}
+    	Tool::_desconectaBD($db);
+    	 
+    	return $archivado;
+    }
 //Fin de la clase Compra
 }
 

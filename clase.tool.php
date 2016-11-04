@@ -13,36 +13,75 @@ define ("DEBUG_SQL",0);
  */
 class Tool{
 
-	public $mensaje;
+	/**
+	 * Función para conectar a la base de datos de la aplicación.
+	 *
+	 * @return bool|resource Devuelve un enlace a la base de datos o false en caso de error.
+	 */
+	public static function _conectaBD(){
+		$link=new mysqli(BD_URL,BD_USUARIO,BD_PASS,BD_NOMBRE);
+		
+		if ($link->connect_errno) {
+			Tool::log("Error en la conexión a la base de datos" . PHP_EOL . $link->connect_errno . ":" . $link->connect_error,LOG);
+			return false;
+		}
+		else{
+			return $link;
+		}
+	}
 
-    /**
-     * Función para conectar a la base de datos de la aplicación.
-     *
-     * @return bool|resource Devuelve un enlace a la base de datos o false en caso de error.
-     */
-    public function conectaBD(){
+	/**
+	 * Función para cerrar un enlace con la base de datos de la aplicación.
+	 *
+	 * @param $db Enlace a la base de datos.
+	 */
+	public static function _desconectaBD($db){
+		$db->close();
+	}
+
+	/**
+	 * Función que ejecuta una consulta SQL sobre una conexión abierta.
+	 * @param unknown $sql Consulta SQL
+	 * @param unknown $db Enlace a la base de datos
+	 * @return unknown Devuelve FALSE en caso de error. Si una consulta del tipo SELECT, SHOW, DESCRIBE o EXPLAIN es exitosa, mysqli_query() devolverá un objeto mysqli_result. Para otras consultas exitosas devolverá TRUE. 
+	 */
+	public static function ejecutaConsulta($sql,$db){
+		$res=mysqli_query($db, $sql);
+		
+		return $res;		
+	}
+
+	
+	
+
+	/**
+	 * Función para conectar a la base de datos de la aplicación.
+	 *
+	 * @return bool|resource Devuelve un enlace a la base de datos o false en caso de error.
+	 */
+	public static function conectaBD(){
 		$link=mysql_connect(BD_URL,BD_USUARIO,BD_PASS);
-
-        if(!$link){
-			$this->loglinea("Error en la conexión a la base de datos" . PHP_EOL . mysql_errno($link) . ":" . mysql_error($link),LOG);				
+		
+		if(!$link){
+			Tool::log("Error en la conexión a la base de datos" . PHP_EOL . mysql_errno($link) . ":" . mysql_error($link),LOG);
 			return false;
 		}
 		else{
 			if(!mysql_select_db(BD_NOMBRE,$link)){
-				$this->loglinea("Error seleccionando a la base de datos" . PHP_EOL . mysql_errno($link) . ":" . mysql_error($link),LOG);				
+				Tool::log("Error seleccionando a la base de datos" . PHP_EOL . mysql_errno($link) . ":" . mysql_error($link),LOG);
 				return false;
-			}			
+			}
 		}
 		return $link;
 	}
-
+	
     /**
      * Función para cerrar un enlace con la base de datos de la aplicación.
      *
      * @param $link Enlace a la base de datos.
      */
-    public function desconectaBD($link){
-        mysql_close($link);
+    public static function desconectaBD($db){
+        mysql_close($db);
     }
 
     /**
@@ -53,18 +92,18 @@ class Tool{
      * @param int $indiceArray Tipo de índice del array que devuelve la función. Por defecto MYSQL_BOTH, puede ser MYSQL_BOTH, MYSQL_NUM o MYSQL_ASSOC.
      * @return array|bool Devuelve un array con todos los registros de la base de datos resultantes de la consulta SQL pasada como parámetro o false en caso de error.
      */
-    public function consulta($sql,$db,$indiceArray=MYSQL_BOTH){
+    public static function consulta($sql,$db,$indiceArray=MYSQL_BOTH){
 		$res = mysql_query($sql,$db);
 		
 		
 		if(!$res){
-			$this->loglinea("[ERROR] SQL:" . $sql,LOG);
+			Tool::log("[ERROR] SQL:" . $sql,LOG);
 			return false;			
 		}
 		else{
 			if(DEBUG_SQL){
-				$this->loglinea("[OK] SQL:" . $sql,LOG);
-				$this->loglinea("FILAS:" . mysql_affected_rows(),LOG);
+				Tool::log("[OK] SQL:" . $sql,LOG);
+				Tool::log("FILAS:" . mysql_affected_rows(),LOG);
 			}
 			
 			if ($indiceArray!=MYSQL_BOTH && $indiceArray!=MYSQL_NUM && $indiceArray!=MYSQL_ASSOC){
@@ -89,16 +128,23 @@ class Tool{
      * @param $db Enlace a la base de datos sobre la que se ejecuta la consulta.
      * @return bool Devuelve true en caso de ejecución correcta y false en caso de error.
      */
-    public function ejecuta($sql,$db){
-		$res=mysql_query($sql);	
+    public static function ejecuta($sql,$db,$logErrors=false){
+
+		$res=mysql_query($sql,$db);	
 		
 		if(!$res){
-			$this->loglinea("[ERROR] SQL:" . $sql,LOG);
+			if($logErrors){
+				Tool::log("[ERROR] SQL:" . $sql,LOG);
+			}
+			
+			echo "SQL:" . $sql . "<br/>Error: " . mysql_error($db) . "<br/>";
+			
 			return false;	
 		}
 		else{
 			return true;
 		}
+		
 	}
 
     /**
@@ -124,7 +170,7 @@ class Tool{
      * @param $resultado Este parámetro no se usa.
      * @param $compra Objeto compra con todos los datos. (NO SE VERIFICA QUE EL OBJETO TENGA LOS DATOS CORRECTOS)
      */
-    public function notificaMAIL($resultado,$compra){
+    public static function notificaMAIL($resultado,$compra){
         $msg="<html><head></head><body><img src='" . EMAIL_URL_IMG_CABECERA . "' width='350' height='100' >";
 		$msg= $msg . "<br><b>Compra Realizada</b> <br>ID:" . $compra->id_transaccion . "<br><br> <b>Datos del comprador:</b> <br>   Nombre completo: " . $compra->comprador->nombre . " " . $compra->comprador->apellidos . " <br>   Email: " . $compra->comprador->email;
 		$msg=$msg . "<br><br><b>Detalles de la compra:</b><br><br>   " . $compra->cantidad . " x " . $compra->item . " ______________ " . $compra->precio . " euros <br><br>";
@@ -216,8 +262,8 @@ class Tool{
 	}
 
     /**
-     * VersiÃ³n de prueba de la funcion notificaMAIL, esta funciÃ³n no registra en el archivo de log el resultado del envio de los emails.
-     * @param $resultado Este parÃ¡metro no se usa.
+     * Versión de prueba de la funcion notificaMAIL, esta función no registra en el archivo de log el resultado del envio de los emails.
+     * @param $resultado Este parámetro no se usa.
      * @param $compra Objeto compra con todos los datos. (NO SE VERIFICA QUE EL OBJETO TENGA LOS DATOS CORRECTOS)
      * @return bool Devuelve false en caso de error y true en caso contrario.
      */
@@ -314,6 +360,19 @@ class Tool{
         $valor = str_ireplace("&","",$valor);
 
         return $valor;
+    }
+    
+    /**
+     * Función para escribir el menú principal.
+     * 
+     */
+    public static function menuPrincipal(){
+    	 return "<ul>
+    		<li><a href='./compradores.php'>Compradores</a></li>
+        	<li><a href='./compras.php'>Compras</a></li>
+        	<li><a href='./tickets.php'>Tickets</a></li>
+    	 		</ul>
+    			";
     }
 }
 

@@ -9,12 +9,11 @@ class Usuario {
     public $pass;
 
     public static function getUsuario($id){
-        $t=new Tool();
         $u=new Usuario();
-        $db=$t->conectaBD();
+        $db=Tool::conectaBD();
         $sql="SELECT * FROM Usuarios WHERE Id='" . $id . "'";
 
-        $res=$t->consulta($sql,$db);
+        $res=Tool::consulta($sql,$db);
 
         if(count($res)<1){
             $u=null;
@@ -26,17 +25,16 @@ class Usuario {
             $u->pass=$res[0]['Pass'];
         }
 
-        $t->desconectaBD($db);
+        Tool::desconectaBD($db);
         return $u;
     }
 
     public static function loginValido($name,$pass){
-        $t=new Tool();
-        $db=$t->conectaBD();
+        $db=Tool::conectaBD();
 
         $sql="SELECT * FROM Usuarios WHERE Nombre='" . $name ."'";
 
-        $res=$t->consulta($sql,$db);
+        $res=Tool::consulta($sql,$db);
 
         if(is_null($res)){
             $aux=false;
@@ -51,7 +49,7 @@ class Usuario {
             }
         }
 
-        $t->desconectaBD($db);
+        Tool::desconectaBD($db);
         return $aux;
 
     }

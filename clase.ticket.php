@@ -24,6 +24,7 @@ public $apellidos;
 public $email;
 public $IdCompra;
 public $codigo;
+public $IdTipo;
 
 public function creaPDF($paraEmail=false,$numPaginas=1){
 	$pdf=new PDF();
@@ -214,34 +215,33 @@ public function creaPDF($paraEmail=false,$numPaginas=1){
 
     /*
 public function estaEntregado(){
-	$t=new Tool();
-	$db=$t->conectaBD();
+	$db=Tool::conectaBD();
 	
 	$cod=$this->codigo;	
 	$sql="SELECT Entregado FROM prv_tickets WHERE Codigo='" . $cod . "'";
-	$res=$t->consulta($sql,$db);	
+	$res=Tool::consulta($sql,$db);	
 	$res=$res[0];
 	$entrega=$res["Entregado"];
 	
 	if($entrega!=null){		
-		$t->desconectaBD($db);
+		Tool::desconectaBD($db);
 		return $entrega;
 	}
 	else{		
 		//el codigo no existe o error de base de datos
-		$t->desconectaBD($db);
+		Tool::desconectaBD($db);
 		return 0;
 	}	
 }
 
 public function existe(){
 	$t=new Tool();
-	$db=$t->conectaBD();
+	$db=Tool::conectaBD();
 	
 	$cod=$this->codigo;	
 	$sql="SELECT * FROM prv_tickets WHERE Codigo='" . $cod . "'";
-	$res=$t->consulta($sql,$db);	
-	$t->desconectaBD($db);
+	$res=Tool::consulta($sql,$db);	
+	Tool::desconectaBD($db);
 	
 	if($res[0]!=null){
 		return true;
@@ -253,7 +253,7 @@ public function existe(){
 
 public function addTicket($nombre,$apellidos,$email,$idcompra,$codigo){
     $t=new Tool();
-    $db=$t->conectaBD();
+    $db=Tool::conectaBD();
 
     $tck=new Ticket();
     $tck->codigo;
@@ -269,12 +269,11 @@ public function addTicket($nombre,$apellidos,$email,$idcompra,$codigo){
 }
 
 public function entregaTicket(){
-	$t=new Tool();
-	$db=$t->conectaBD();
+	$db=Tool::conectaBD();
 	
 	if($this->codigo!=""){
 		$sql="UPDATE `prv_tickets` SET `Entregado`=1,`fechaEntrega`=now() WHERE `Codigo`=" . $this->codigo;		
-		$t->ejecuta($sql,$db);
+		Tool::ejecuta($sql,$db);
 		
 		if(mysql_affected_rows($db)==1){
 			$res=true;
@@ -287,29 +286,80 @@ public function entregaTicket(){
 		$res=false;
 	}
 	
-	$t->desconectaBD($db);
+	Tool::desconectaBD($db);
 	return $res;
 }
 */
 
+public static function archivaTicket($id){
+	$db=Tool::_conectaBD();
+	$archivado=false;
+	
+	if(!$db){
+		//error
+		//echo "Error conectando <br/>";
+	}
+	else{
+		if(!Ticket::estaArchivado($id)){
+			$aux=new Ticket();
+			$aux->getTicket($id);
+			$sql="INSERT INTO HistoricoTickets (IdCompra,Codigo,IdTipo,Entregado) VALUES " .
+			"('" . $aux->IdCompra . "','" . $aux->codigo . "','" . $aux->IdTipo . "',0)" ;
+			
+			if($aux->codigo<>""){				
+				if(Tool::ejecutaConsulta($sql, $db)){
+					$archivado=true;
+				}
+				else{
+					//error	
+					echo "Error insertando " . $aux->codigo . "<br/>SQL: " . $sql . "</br>";
+				}				
+			}
+			else{
+				//error
+				echo "Error obteniendo " . $id . "<br/>SQL: " . $sql . "</br>";
+			}
+		}
+		else{
+			$archivado=true;
+		}
+		
+		if($archivado){
+			Ticket::deleteTicket($id);
+		}
+	}
+	Tool::_desconectaBD($db);
+	
+	return $archivado;
+}
+
+public static function estaArchivado($id){
+	$db=Tool::_conectaBD();
+	
+	$sql="SELECT * FROM HistoricoTickets WHERE Codigo='" . $id . "'";
+	$res=Tool::ejecutaConsulta($sql, $db);
+	
+	$aux=mysqli_affected_rows($db);
+	
+	Tool::_desconectaBD($db);
+	
+	return ($aux>0);	
+}
+
 public static function listadoTickets($filtro="1"){
-    $t=new Tool();
-    $db=$t->conectaBD();
-
-
+    $db=Tool::_conectaBD();
+    
     $sql="SELECT * FROM Tickets WHERE " . $filtro;
 
-    $res=$t->consulta($sql,$db);
+    $res=Tool::ejecutaConsulta($sql,$db);
 
-    $t->desconectaBD($db);
+    Tool::_desconectaBD($db);
 
     return $res;
 }
 
 public static function listadoTicketsPDF(){
-    $t=new Tool();
-    $db=$t->conectaBD();
-
+    $db=Tool::_conectaBD();
 
     $sql="SELECT cli.Apellidos,cli.Nombre,cli.Email, c.Fecha,t.Codigo
     FROM Compras as c
@@ -317,13 +367,78 @@ public static function listadoTicketsPDF(){
     INNER JOIN Tickets AS t ON c.Id=t.IdCompra
     ORDER BY cli.Nombre,cli.Apellidos,t.Codigo";
 
-    $res=$t->consulta($sql,$db);
+    $res=Tool::ejecutaConsulta($sql,$db);
 
-    $t->desconectaBD($db);
+    Tool::_desconectaBD($db);
 
     return $res;
 }
 
+/**
+ * Función que importa los datos del ticket de la base de datos al objeto Ticket que la invoca.
+ * @param unknown $id Id del ticket a importar.
+ */
+public function getTicket($id){
+	$db=Tool::_conectaBD();
+	
+	$err=false;
+	
+	if(!$db){
+		$err=true;
+		//echo "Error conectando a BD<br/>";
+	}
+	else{
+		$sql="SELECT * FROM Tickets WHERE Codigo='" . $id . "'";
+		$res=Tool::ejecutaConsulta($sql, $db);
+		
+		//echo "Obteniendo " . $id . " con SQL -> " . $sql . "<br/>";
+		
+		if(!$res){
+			$err=true;
+			echo "Error obteniendo a " . $id . " <br/>SQL: " . $sql . "<br/>";
+		}
+		else{			
+			$aux=mysqli_fetch_assoc($res);
+			
+			$this->IdCompra=$aux['IdCompra'];
+			$this->codigo=$aux['Codigo'];
+			$this->IdTipo=$aux['IdTipo'];
+			$this->nombre="";
+			$this->apellidos="";
+			$this->email="";
+			
+			mysqli_free_result($res);
+		}
+	}
+	
+	if($err){
+		$this->IdCompra="";
+		$this->codigo="";
+		$this->IdTipo="";
+		$this->nombre="";
+		$this->apellidos="";
+		$this->email="";
+	}
+	
+	Tool::_desconectaBD($db);
+}
+
+public static function deleteTicket($id){
+	$db=Tool::_conectaBD();
+	
+	if(!$db){
+		//error
+	}
+	else{
+		$sql="DELETE FROM Tickets WHERE Codigo='" . Tool::limpiaCadena($id) . "'";
+		$res=Tool::ejecutaConsulta($sql, $db);
+		
+	}
+	
+	Tool::_desconectaBD($db);
+	
+	return $res;
+}
  //Fin de la clase Ticket
 }
 

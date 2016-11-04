@@ -13,11 +13,10 @@ if(isset($_SESSION["username"])){
 
     $ticket=new Ticket();
 
-    $t=new Tool();
-    $db=$t->conectaBD();
+    $db=Tool::conectaBD();
 
     $sql="SELECT * FROM Compras as C INNER JOIN Compradores as Co ON C.IdComprador=Co.Email WHERE Id='" . $codigo . "'";
-    $res=$t->consulta($sql,$db);
+    $res=Tool::consulta($sql,$db);
 
     $nombre=$res[0]['Nombre'] . " " . $res[0]['Apellidos'];
     $cantidad=$res[0]['Cantidad'];
@@ -29,7 +28,7 @@ if(isset($_SESSION["username"])){
     $ticket->creaPDF(false,$cantidad);
 
 
-    $t->desconectaBD($db);
+    Tool::desconectaBD($db);
 }
 else{
     //ERROR: Al usar el include_once "../clase.tool.php" provoca llamada a config.php que escribe algo y da error al escribir las cabeceras. Queda atascado aqui.

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Equipo
- * Date: 21/05/16
- * Time: 17:18
- */
-
 
 
 //Si incluimos el archivo clase.tool.php se envian cabeceras desde config.php y la llamada final a header da error

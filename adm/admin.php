@@ -1,10 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Equipo
- * Date: 1/12/14
- * Time: 12:47
- */
+
+include_once "../clase.tool.php";
 
 session_start();
 
@@ -16,9 +12,7 @@ if(isset($_SESSION["username"])){
     <h1 style='float: left;'>Gesti&oacute;n de entradas anticipadas</h1>
     </div>
     <div style='width: 200px;text-align: left;background-color: #708e8b;position: absolute;top: 90px;left: 10px; padding-left: 10px;'>
-        <a href='./compradores.php'>Compradores</a><br>
-        <a href='./compras.php'>Compras</a><br>
-        <a href='./tickets.php'>Tickets</a><br>
+        " . Tool::menuPrincipal() . "
     </div>
     ";
 }

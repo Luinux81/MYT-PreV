@@ -200,7 +200,7 @@ if($auxReg2){
 		
 		if($res){
 			Tool::log("[OK] Compra con ID " . $compra->id_transaccion . " registrada correctamente",LOG_FILE);
-			$t->notificaMAIL(true,$compra);
+			Tool::notificaMAIL(true,$compra);
 		}
 	}
 	else{
@@ -208,7 +208,7 @@ if($auxReg2){
 	}
 }
 else{
-		Tool::log("[ERROR] Compra con ID " . $compra->id_transaccion . " érronea o no completada",LOG_FILE);
+		Tool::log("[ERROR] Compra con ID " . $compra->id_transaccion . " erronea o no completada",LOG_FILE);
 }
 
 

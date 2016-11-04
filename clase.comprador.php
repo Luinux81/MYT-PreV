@@ -10,21 +10,20 @@ class Comprador{
 	public $email;
 		
 	public function estaRegistrado($actualiza=true){
-		$t=new Tool();				
-		$db=$t->conectaBD();
+		$db=Tool::conectaBD();
 		
 		if(!$db){
             Tool::log("[ERROR] Error conectando a la base de datos buscando registro de comprador" . PHP_EOL . mysql_errno . ":" . mysql_error($db),LOG);
         }
 		else{
 			$sql="SELECT * FROM Compradores WHERE email='" . $this->email . "'";
-			$res=$t->consulta($sql,$db);
+			$res=Tool::consulta($sql,$db);
 			
 			$aux=mysql_affected_rows();
 			
 			if($aux<0){
                 Tool::log("[ERROR] Error ejecutando consulta buscando registro de comprador" . PHP_EOL . mysql_errno . ":" . mysql_error($db),LOG);
-				$t->desconectaBD($db);			
+                Tool::desconectaBD($db);			
 				return "-1";
 			}
 			else{
@@ -37,71 +36,85 @@ class Comprador{
                     if($actualiza){
                         if($res[0]['Nombre']==""){
                             $sql="UPDATE Compradores SET Nombre='" . $this->nombre . "' WHERE Email='" . $this->email . "'";
-                            $t->ejecuta($sql,$db);
+                            Tool::ejecuta($sql,$db);
                         }
                         if($res[0]['Apellidos']==""){
                             $sql="UPDATE Compradores SET Apellidos='" . $this->apellidos . "' WHERE Email='" . $this->email . "'";
-                            $t->ejecuta($sql,$db);
+                            Tool::ejecuta($sql,$db);
                         }
                     }
                     ////
 				}
-                $t->desconectaBD($db);
+				Tool::desconectaBD($db);
                 return $resul;
 			}
 		}	
 	}
 	
+	public static function estaArchivado($id){
+		$db=Tool::conectaBD();
+		
+		$sql="SELECT * FROM HistoricoCompradores WHERE Email='" . $id . "'";		
+		$res=Tool::consulta($sql, $db);
+		
+		$aux=mysql_affected_rows();
+		
+		Tool::desconectaBD($db);
+		
+		if ($aux>0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	public function registraComprador(){
-		$t=new Tool();
-		$db=$t->conectaBD();
+		$db=Tool::conectaBD();
 		if(!db){
             Tool::log("[ERROR] Error conectando a la base de datos registrando comprador" . PHP_EOL . mysql_errno . ":" . mysql_error($db),LOG);
 			$res=false;
 		}
 		else{
 			$sql="INSERT INTO Compradores (nombre,apellidos,email) VALUES ('" . $this->nombre . "','" . $this->apellidos . "','" . $this->email . "')";
-			$res=$t->ejecuta($sql,$db);
-			$t->desconectaBD($db);
+			$res=Tool::ejecuta($sql,$db);
+			Tool::desconectaBD($db);
 			
 			return $res;
 		}
 	}
 	
 	public function registraCompradorDatos($nombre,$apellidos,$email){
-		$t=new Tool();
-		$db=$t->conectaBD();
+		$db=Tool::conectaBD();
 		if(!db){
             Tool::log("[ERROR] Error conectando a la base de datos registrando comprador" . PHP_EOL . mysql_errno . ":" . mysql_error($db),LOG);
 			$res=false;
 		}
 		else{
 			$sql="INSERT INTO Compradores (nombre,apellidos,email) VALUES ('" . $nombre . "','" . $apellidos . "','" . $email . "')";
-			$res=$t->ejecuta($sql,$db);
-			$t->desconectaBD($db);
+			$res=Tool::ejecuta($sql,$db);
+			Tool::desconectaBD($db);
 			
 			return $res;
 		}
 	}
 	
 	public function listadoCompradores(){
-		$t=new Tool();
-		$db=$t->conectaBD();
+		$db=Tool::conectaBD();
 		if(!db){
 		//error
 		}
 		else{
 			$sql="SELECT * FROM Compradores";
-			$res=$t->consulta($sql,$db);
-			$t->desconectaBD($db);
+			$res=Tool::consulta($sql,$db);
+			Tool::desconectaBD($db);
 			
 			return $res;
 		}
 	}
 
     public function getDatosComprador($id){
-        $t=new Tool();
-        $db=$t->conectaBD();
+        $db=Tool::conectaBD();
         if(!db){
             //error
         }
@@ -109,16 +122,15 @@ class Comprador{
             $id=Tool::limpiaCadena($id);
 
             $sql="SELECT * FROM Compradores WHERE Email='" . $id . "'";
-            $res=$t->consulta($sql,$db);
-            $t->desconectaBD($db);
+            $res=Tool::consulta($sql,$db);
+            Tool::desconectaBD($db);
 
             return $res[0];
         }
     }
 
     public function updateComprador($nuevo_nombre,$nuevo_apellidos,$nuevo_email, $emailID){
-        $t=new Tool();
-        $db=$t->conectaBD();
+        $db=Tool::conectaBD();
         if(!db){
             //error
             $res=false;
@@ -134,18 +146,21 @@ class Comprador{
             $sql="UPDATE Compradores SET Nombre='" . $nombre . "',Apellidos='" . $apellidos . "', Email='" . $email . "' WHERE Email='" . $emailID . "'";
 
 
-            $res=$t->ejecuta($sql,$db);
+            $res=Tool::ejecuta($sql,$db);
 
-            $t->desconectaBD($db);
+            Tool::desconectaBD($db);
 
             return $res;
         }
     }
 
-    public function deleteComprador($id){
-        $t=new Tool();
-        $db=$t->conectaBD();
-        if(!db){
+    /**
+     * Función para borrar un comprador de la tabla Compradores.
+     * @param unknown $id Email del comprador.
+     */
+    public static function deleteComprador($id){
+        $db=Tool::_conectaBD();
+        if(!$db){
             //error
             $res=false;
         }
@@ -157,17 +172,16 @@ class Comprador{
             $sql="DELETE FROM Compradores WHERE Email='" . $emailID . "'";
 
 
-            $res=$t->ejecuta($sql,$db);
+            $res=Tool::ejecutaConsulta($sql,$db);
 
-            $t->desconectaBD($db);
+            Tool::_desconectaBD($db);
 
             return $res;
         }
     }
 
     public function getComprador($id){
-        $t=new Tool();
-        $db=$t->conectaBD();
+        $db=Tool::conectaBD();
         if(!db){
             //error
         }
@@ -175,8 +189,8 @@ class Comprador{
             $id=Tool::limpiaCadena($id);
 
             $sql="SELECT * FROM Compradores WHERE Email='" . $id . "'";
-            $res=$t->consulta($sql,$db);
-            $t->desconectaBD($db);
+            $res=Tool::consulta($sql,$db);
+            Tool::desconectaBD($db);
 
             if (!is_null($res[0])){
                 $this->nombre=$res[0]['Nombre'];
@@ -191,6 +205,54 @@ class Comprador{
         }
     }
 
+    /**
+     * Función para mover un comprador de la tabla Compradores a HistoricoCompradores. El registro desaparecerá de la tabla Compradores.
+     * @param unknown $id Email del comprador.
+     */
+    public static function archivaComprador($id){
+    	$db=Tool::_conectaBD();
+    	
+    	$archivado=false;
+    	
+    	if(!$db){
+    		Tool::log("[ERROR] Error conectando a la base de datos archivando comprador" . PHP_EOL . mysqli_errno($db) . ":" . mysqli_error($db),LOG);    		
+    	}
+    	else{    		
+    		$c=new Comprador();
+    		$c->getComprador($id);
+    		
+    		$sql="INSERT INTO HistoricoCompradores (nombre,apellidos,email) VALUES ('" . $c->nombre . "','" . $c->apellidos . "','" . $c->email . "')";
+
+    		
+    		if($c->email<>""){    			
+    			if(!Comprador::estaArchivado($c->email)){
+    				if(Tool::ejecutaConsulta($sql, $db)){
+    					//echo "Comprador " . $c->email . " archivado<br/>";
+    					$archivado=true;
+    				}
+    				else{
+    					//echo "Error en la insercion del comprador " . $c->email . " -> " . mysql_error($db) . "<br/>
+    					//	  SQL->" . $sql . "<br/><hr/>";
+    				}
+    			}
+    			else{
+    				$archivado=true;
+    				//echo "Comprador " . $id . " ya esta archivado<br/>";
+    			}
+    		}
+    		else{
+    			//echo "Comprador " . $id . " no encontrado<br/>";
+    		}
+    		
+			if($archivado){
+				Comprador::deleteComprador($id);
+			}
+    	}
+    	Tool::_desconectaBD($db);
+    	
+    	return $archivado;
+    }
+    
 	public function aTexto(){
 		return ($this->nombre . " " . $this->apellidos . " * " . $this->email);
 	}

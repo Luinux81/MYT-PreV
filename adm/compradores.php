@@ -23,9 +23,7 @@ if(isset($_SESSION["username"])){
     <h1 style='float: left;padding-left: 10px;'>Gesti&oacute;n de entradas anticipadas</h1>
     </div>
     <div style='width: 215px;text-align: left;background-color: #708e8b;position: absolute;top: 90px;left: 10px; padding-left: 10px;'>
-        <a href='./compradores.php'>Compradores</a><br>
-        <a href='./compras.php'>Compras</a><br>
-        <a href='./tickets.php'>Tickets</a><br>
+	" . Tool::menuPrincipal() . "
     </div>
     ";
 

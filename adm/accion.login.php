@@ -6,13 +6,6 @@ ob_start();
 include_once "../clase.usuario.php";
 include_once "../clase.tool.php";
 
-/**
- * Created by PhpStorm.
- * User: Equipo
- * Date: 1/12/14
- * Time: 11:58
- */
-
 
 session_start();
 
