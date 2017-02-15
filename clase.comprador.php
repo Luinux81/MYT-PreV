@@ -69,39 +69,42 @@ class Comprador{
 		}
 	}
 	
-	public function registraComprador(){
+	public function addComprador(){
 		$db=Tool::conectaBD();
-		if(!db){
+		if(!$db){
             Tool::log("[ERROR] Error conectando a la base de datos registrando comprador" . PHP_EOL . mysql_errno . ":" . mysql_error($db),LOG);
 			$res=false;
 		}
 		else{
 			$sql="INSERT INTO Compradores (nombre,apellidos,email) VALUES ('" . $this->nombre . "','" . $this->apellidos . "','" . $this->email . "')";
-			$res=Tool::ejecuta($sql,$db);
+			$res=Tool::ejecutaConsulta($sql,$db);
 			Tool::desconectaBD($db);
 			
 			return $res;
 		}
 	}
 	
-	public function registraCompradorDatos($nombre,$apellidos,$email){
+	
+	public static function addNuevoComprador($nombre,$apellidos,$email){
 		$db=Tool::conectaBD();
-		if(!db){
+		if(!$db){
             Tool::log("[ERROR] Error conectando a la base de datos registrando comprador" . PHP_EOL . mysql_errno . ":" . mysql_error($db),LOG);
 			$res=false;
 		}
 		else{
 			$sql="INSERT INTO Compradores (nombre,apellidos,email) VALUES ('" . $nombre . "','" . $apellidos . "','" . $email . "')";
-			$res=Tool::ejecuta($sql,$db);
+			$res=Tool::ejecutaConsulta($sql,$db);
 			Tool::desconectaBD($db);
 			
 			return $res;
 		}
 	}
 	
+	
+	
 	public function listadoCompradores(){
 		$db=Tool::conectaBD();
-		if(!db){
+		if(!$db){
 		//error
 		}
 		else{
@@ -115,7 +118,7 @@ class Comprador{
 
     public function getDatosComprador($id){
         $db=Tool::conectaBD();
-        if(!db){
+        if(!$db){
             //error
         }
         else{
@@ -131,7 +134,7 @@ class Comprador{
 
     public function updateComprador($nuevo_nombre,$nuevo_apellidos,$nuevo_email, $emailID){
         $db=Tool::conectaBD();
-        if(!db){
+        if(!$db){
             //error
             $res=false;
         }
@@ -159,7 +162,7 @@ class Comprador{
      * @param unknown $id Email del comprador.
      */
     public static function deleteComprador($id){
-        $db=Tool::_conectaBD();
+        $db=Tool::conectaBD();
         if(!$db){
             //error
             $res=false;
@@ -174,7 +177,7 @@ class Comprador{
 
             $res=Tool::ejecutaConsulta($sql,$db);
 
-            Tool::_desconectaBD($db);
+            Tool::desconectaBD($db);
 
             return $res;
         }
@@ -210,7 +213,7 @@ class Comprador{
      * @param unknown $id Email del comprador.
      */
     public static function archivaComprador($id){
-    	$db=Tool::_conectaBD();
+    	$db=Tool::conectaBD();
     	
     	$archivado=false;
     	
@@ -248,7 +251,7 @@ class Comprador{
 				Comprador::deleteComprador($id);
 			}
     	}
-    	Tool::_desconectaBD($db);
+    	Tool::desconectaBD($db);
     	
     	return $archivado;
     }

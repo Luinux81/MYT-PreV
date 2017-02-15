@@ -85,14 +85,14 @@ class Compra{
 	}
 	
 	public static function estaArchivada($id){
-		$db=Tool::_conectaBD();
+		$db=Tool::conectaBD();
 		
 		$sql="SELECT * FROM HistoricoCompras WHERE Id='" . $id ."'";
 		$res=Tool::ejecutaConsulta($sql, $db);
 		
 		$aux=mysqli_affected_rows($db);
 		
-		Tool::_desconectaBD($db);
+		Tool::desconectaBD($db);
 		
 		return ($aux>0);
 	}
@@ -147,7 +147,7 @@ class Compra{
 
 
     public function listadoCompras($filtro="1"){
-        $db=Tool::_conectaBD();
+        $db=Tool::conectaBD();
 
         if(!$db){
             //error
@@ -155,7 +155,7 @@ class Compra{
         else{
             $sql="SELECT * FROM Compras WHERE " . $filtro;
             $res=Tool::ejecutaConsulta($sql,$db);
-            Tool::_desconectaBD($db);
+            Tool::desconectaBD($db);
 
             return $res;
         }
@@ -391,7 +391,7 @@ class Compra{
      * @param unknown $id Id de la compra.
      */
     public static function deleteCompra($id){
-        $db=Tool::_conectaBD();
+        $db=Tool::conectaBD();
         if(!$db){
             //error
             $res=false;
@@ -405,7 +405,7 @@ class Compra{
 
             $res=Tool::ejecutaConsulta($sql,$db);
 
-            Tool::_desconectaBD($db);
+            Tool::desconectaBD($db);
 
             return $res;
         }
@@ -437,7 +437,7 @@ class Compra{
      * @param unknown $id Id de la compra.
      */
     public static function archivaCompra($id){
-    	$db=Tool::_conectaBD();
+    	$db=Tool::conectaBD();
     	$archivado=false;
     	
     	if(!$db){
@@ -476,7 +476,7 @@ class Compra{
     			Compra::deleteCompra($id);
     		}
     	}
-    	Tool::_desconectaBD($db);
+    	Tool::desconectaBD($db);
     	 
     	return $archivado;
     }

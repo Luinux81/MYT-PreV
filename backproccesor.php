@@ -177,7 +177,7 @@ else{
 $auxReg1=$comprador->estaRegistrado();
 
 if(!$auxReg1){	
-	if($comprador->registraComprador()){
+	if($comprador->addComprador()){
 			Tool::log("[OK] Registro de nuevo comprador",LOG_FILE);
 	}
 	else{

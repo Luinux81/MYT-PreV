@@ -292,7 +292,7 @@ public function entregaTicket(){
 */
 
 public static function archivaTicket($id){
-	$db=Tool::_conectaBD();
+	$db=Tool::conectaBD();
 	$archivado=false;
 	
 	if(!$db){
@@ -328,38 +328,38 @@ public static function archivaTicket($id){
 			Ticket::deleteTicket($id);
 		}
 	}
-	Tool::_desconectaBD($db);
+	Tool::desconectaBD($db);
 	
 	return $archivado;
 }
 
 public static function estaArchivado($id){
-	$db=Tool::_conectaBD();
+	$db=Tool::conectaBD();
 	
 	$sql="SELECT * FROM HistoricoTickets WHERE Codigo='" . $id . "'";
 	$res=Tool::ejecutaConsulta($sql, $db);
 	
 	$aux=mysqli_affected_rows($db);
 	
-	Tool::_desconectaBD($db);
+	Tool::desconectaBD($db);
 	
 	return ($aux>0);	
 }
 
 public static function listadoTickets($filtro="1"){
-    $db=Tool::_conectaBD();
+    $db=Tool::conectaBD();
     
     $sql="SELECT * FROM Tickets WHERE " . $filtro;
 
     $res=Tool::ejecutaConsulta($sql,$db);
 
-    Tool::_desconectaBD($db);
+    Tool::desconectaBD($db);
 
     return $res;
 }
 
 public static function listadoTicketsPDF(){
-    $db=Tool::_conectaBD();
+    $db=Tool::conectaBD();
 
     $sql="SELECT cli.Apellidos,cli.Nombre,cli.Email, c.Fecha,t.Codigo
     FROM Compras as c
@@ -369,7 +369,7 @@ public static function listadoTicketsPDF(){
 
     $res=Tool::ejecutaConsulta($sql,$db);
 
-    Tool::_desconectaBD($db);
+    Tool::desconectaBD($db);
 
     return $res;
 }
@@ -379,7 +379,7 @@ public static function listadoTicketsPDF(){
  * @param unknown $id Id del ticket a importar.
  */
 public function getTicket($id){
-	$db=Tool::_conectaBD();
+	$db=Tool::conectaBD();
 	
 	$err=false;
 	
@@ -420,11 +420,11 @@ public function getTicket($id){
 		$this->email="";
 	}
 	
-	Tool::_desconectaBD($db);
+	Tool::desconectaBD($db);
 }
 
 public static function deleteTicket($id){
-	$db=Tool::_conectaBD();
+	$db=Tool::conectaBD();
 	
 	if(!$db){
 		//error
@@ -435,7 +435,7 @@ public static function deleteTicket($id){
 		
 	}
 	
-	Tool::_desconectaBD($db);
+	Tool::desconectaBD($db);
 	
 	return $res;
 }

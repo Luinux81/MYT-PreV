@@ -18,7 +18,7 @@ class Tool{
 	 *
 	 * @return bool|resource Devuelve un enlace a la base de datos o false en caso de error.
 	 */
-	public static function _conectaBD(){
+	public static function conectaBD(){
 		$link=new mysqli(BD_URL,BD_USUARIO,BD_PASS,BD_NOMBRE);
 		
 		if ($link->connect_errno) {
@@ -35,7 +35,7 @@ class Tool{
 	 *
 	 * @param $db Enlace a la base de datos.
 	 */
-	public static function _desconectaBD($db){
+	public static function desconectaBD($db){
 		$db->close();
 	}
 
@@ -51,38 +51,6 @@ class Tool{
 		return $res;		
 	}
 
-	
-	
-
-	/**
-	 * Función para conectar a la base de datos de la aplicación.
-	 *
-	 * @return bool|resource Devuelve un enlace a la base de datos o false en caso de error.
-	 */
-	public static function conectaBD(){
-		$link=mysql_connect(BD_URL,BD_USUARIO,BD_PASS);
-		
-		if(!$link){
-			Tool::log("Error en la conexión a la base de datos" . PHP_EOL . mysql_errno($link) . ":" . mysql_error($link),LOG);
-			return false;
-		}
-		else{
-			if(!mysql_select_db(BD_NOMBRE,$link)){
-				Tool::log("Error seleccionando a la base de datos" . PHP_EOL . mysql_errno($link) . ":" . mysql_error($link),LOG);
-				return false;
-			}
-		}
-		return $link;
-	}
-	
-    /**
-     * Función para cerrar un enlace con la base de datos de la aplicación.
-     *
-     * @param $link Enlace a la base de datos.
-     */
-    public static function desconectaBD($db){
-        mysql_close($db);
-    }
 
     /**
      * Función para la ejecución de consultas SELECT sobre la base de datos.
