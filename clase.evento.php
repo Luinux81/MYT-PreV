@@ -165,7 +165,9 @@ class Evento{
 		
 		$sql="SELECT * FROM Eventos WHERE IdEvento='" . $idEvento ."'";
 		
-		$res=Tool::ejecutaConsulta($sql, $db);
+		$aux=Tool::ejecutaConsulta($sql, $db);
+		
+		$res=$aux->fetch_assoc();
 		
 		$evt=new Evento();
 		$evt->IdEvento=$res['IdEvento'];
@@ -176,7 +178,7 @@ class Evento{
 		$evt->EntradasVendidas=$res['EntradasVendidas'];
 		$evt->TipoEvento=$res['TipoEvento'];
 		$evt->Estado=$res['Estado'];
-		$evt->Lugar=$es['Lugar'];
+		$evt->Lugar=$res['Lugar'];
 		$evt->Direccion=$res['Direccion'];
 		$evt->Ciudad=$res['Ciudad'];
 		$evt->Pais=$res['Pais'];
