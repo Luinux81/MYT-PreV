@@ -346,6 +346,39 @@ class Tool{
     	 		</ul>
     			";
     }
+
+    /**
+     * Adapta el formato de una fecha al formato necesario para asignar el valor a la propiedad value de un tag HTML5 datetime-local
+     * @param unknown $fecha Fecha de entrada en un foramto aceptado por date_parse de PHP
+     * @return string Fecha en formato aceptado por el tag HTML5 datetime-local
+     */
+    public static function adaptaFechaBDaForm($fecha){
+    	$aux=date_parse($fecha);
+    	
+    	$mes=$aux['month'];
+    	if($mes<10){
+    		$mes="0" . $mes;
+    	}
+    	
+    	$dia=$aux['day'];
+    	if($dia<10){
+    		$dia="0" . $dia;
+    	}
+    	
+    	$h=$aux['hour'];
+    	if($h<10){
+    		$h="0" . $h;
+    	}
+    	
+    	$min=$aux['minute'];
+    	if($min<10){
+    		$min="0" . $min;
+    	}
+    	
+    	$res=$aux['year'] . "-" . $mes . "-" . $dia . "T" . $h . ":" . $min;
+    	
+    	return $res;
+    }
 }
 
 ?>
