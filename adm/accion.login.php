@@ -1,6 +1,6 @@
 <?php
 
-ob_start();
+//ob_start();
 
 
 include_once "../clase.usuario.php";
@@ -15,11 +15,11 @@ $pass=$_POST['password'];
 if(Usuario::loginValido($username,$pass)){
     $_SESSION["username"]=$username;
     $aux="Location:admin.php";
-    print_r("OK");
+    //print_r("OK");
 }
 else{
     $aux="Location:login.php?err";
-    print_r("NO");
+    //print_r("NO");
 }
 
 header($aux);

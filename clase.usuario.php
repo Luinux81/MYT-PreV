@@ -34,21 +34,17 @@ class Usuario {
 
         $sql="SELECT * FROM Usuarios WHERE Nombre='" . $name ."'";
 
-        $res=Tool::consulta($sql,$db);
+        $res=Tool::ejecutaConsulta($sql,$db);
 
-        if(is_null($res)){
-            $aux=false;
-        }
-        else{
-            if(count($res)>0){
-                $storedpass=$res[0]['Pass'];
-                $aux=($pass==$storedpass);
-            }
-            else{
-                $aux=false;
-            }
+        $aux=false;
+        
+        if ($res->num_rows>0){
+        	$fila=$res->fetch_assoc();
+        	$aux=($fila['Pass']==$pass);
         }
 
+        $res->free();
+        
         Tool::desconectaBD($db);
         return $aux;
 

@@ -11,7 +11,7 @@ echo "<div style='background-color: #fff5c6;'>";
 echo "<div style='width: 100%;text-align: left;background-color: #983030;position: absolute;top: 0px;left: 0px; padding-left: 10px;'>
 
     <img src='cabecera.jpg' style='float: left;'>
-    <h1 style='float: left;padding-left: 10px;'>Gesti&oacute;n de entradas anticipadas</h1>
+    <h1 style='float: left;padding-left: 10px;'>MYTickets</h1>
     </div>
 
     ";
