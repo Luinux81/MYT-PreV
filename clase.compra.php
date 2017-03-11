@@ -33,17 +33,25 @@ class Compra{
 	public $fecha;
 	
 
+	/**
+	 * Esta función comprueba el estado de la compra es "Completed"
+	 * @return boolean
+	 */
 	public function compraCompletada(){
 		return ($this->estado=="Completed");		
 	}
 	
+	/**
+	 * Esta función comprueba que el email del vendedor está configurado en la app, que el estado ded la compra este completado y que el tipo de ticket existe
+	 * @return boolean
+	 */
 	public function compraVerificada(){
 		if ((($this->email_vendedor==EMAIL_PAYPAL1) || ($this->email_vendedor==EMAIL_PAYPAL2)) && $this->estado=="Completed"){
             if(TipoTicket::existeTipo($this->item_id)){
                 return true;
             }
             else{
-                Tool::log("[ERROR]El tipo de ticket no estÃ¡ registrado",LOG);
+                Tool::log("[ERROR]El tipo de ticket no está registrado",LOG);
                 return false;
             }
         }
@@ -52,9 +60,13 @@ class Compra{
         }
 	}
 	
-	public function compraRegistrada(){
-		$t=new Tool();		
+	/**
+	 * Esta función devuelve True si existe una compra en la base de datos con ID igual al id_transaccion
+	 * @return boolean
+	 */
+	public function compraRegistrada(){				
 		$db=Tool::conectaBD();
+		
 		if(!$db){
             Tool::log("[ERROR] Error conectando a la base de datos buscando registro de compra" . PHP_EOL . mysql_errno . " : " . mysql_error($db),LOG);
 		}
@@ -67,7 +79,7 @@ class Compra{
 			if($aux<0){
                 Tool::log("[ERROR] Error ejecutando consulta buscando registro de compra" . PHP_EOL . mysql_errno . ":" . mysql_error($db),LOG);
                 Tool::desconectaBD($db);			
-				return "-1";			
+				return false;			
 			}
 			else{
 				Tool::desconectaBD($db);
@@ -84,6 +96,11 @@ class Compra{
 		}
 	}
 	
+	/**
+	 * Esta función comprueba que la compra está guardada en el historico.
+	 * @param string $id ID de la compra  
+	 * @return boolean True si la compra esta guardada
+	 */
 	public static function estaArchivada($id){
 		$db=Tool::conectaBD();
 		
@@ -97,6 +114,11 @@ class Compra{
 		return ($aux>0);
 	}
 	
+	/**
+	 * Esta función guarda los valores de los atributos en la base de datos.
+	 * @param string $autoTickets Si True genera los valores de los tickets y los guarda en la base de datos.
+	 * @return boolean True si éxito guardando.
+	 */
 	public function registraCompra($autoTickets=true){
 		$db=Tool::conectaBD();
 		if(!$db){
@@ -141,11 +163,20 @@ class Compra{
 		}
 	}
 	
+	/**
+	 * PARA ELIMINAR
+	 * @return string
+	 */
 	public function aTexto(){
 		return $this->id_transaccion;
 	}
 
 
+	/**
+	 * Esta función devuelve las compras guardadas en la base de datos
+	 * @param string $filtro Cadena para la clausula WHERE
+	 * @return unknown Array de resultados
+	 */
     public function listadoCompras($filtro="1"){
         $db=Tool::conectaBD();
 
@@ -153,6 +184,7 @@ class Compra{
             //error
         }
         else{
+        	$filtro=Tool::limpiaCadena($filtro);
             $sql="SELECT * FROM Compras WHERE " . $filtro;
             $res=Tool::ejecutaConsulta($sql,$db);
             Tool::desconectaBD($db);
@@ -161,6 +193,10 @@ class Compra{
         }
     }
 
+    /**
+     * Esta función obtiene la información de compra de la base de datos y la guarda en el objeto invocador.
+     * @param unknown $id ID de la compra
+     */
     public function getCompra($id){
         $db=Tool::conectaBD();
 
@@ -205,6 +241,11 @@ class Compra{
         }
     }
 
+    /**
+     * Esta función obtiene información de la base de datos y devuelve un array de objetos Ticket asociados a una compra.
+     * @param unknown $id ID de la compra
+     * @return Ticket[] Tickets asociados a la compra
+     */
     public static function getTickets($id){
         $tick=new Ticket();
 
@@ -239,6 +280,12 @@ class Compra{
         }
     }
 
+    /**
+     * Esta función crea registros de nuevos tickets en la base de datos.
+     * @param unknown $idCompra ID de la compra a la que estarán asociados los tickets.
+     * @param unknown $num Número de tickets a añadir
+     * @return boolean
+     */
     public static function addTickets($idCompra,$num){
         $res=true;
         for($i=1;$i<=$num;$i++){
@@ -279,6 +326,12 @@ class Compra{
         }
     }
 
+    /**
+     * Esta función elimina registros de tickets en la base de datos
+     * @param unknown $idCompra ID de la compra 
+     * @param unknown $num Número de tickets a eliminar
+     * @return boolean
+     */
     public static function deleteTickets($idCompra,$num){
         $res=true;
         for($i=1;$i<=$num;$i++){
@@ -360,6 +413,15 @@ class Compra{
         }
     }
 
+    /**
+     * Función para modificar el registro de una compra existente en la base de datos.
+     * @param unknown $nuevo_ID Nuevo ID de la compra
+     * @param unknown $nuevo_email Email del comprador
+     * @param unknown $nueva_cantidad Cantidad
+     * @param unknown $nuevo_importe Importe
+     * @param unknown $idCompra ID de la compra existente
+     * @return boolean
+     */
     public function updateCompra($nuevo_ID,$nuevo_email,$nueva_cantidad, $nuevo_importe,$idCompra){
         $db=Tool::conectaBD();
         if(!db){

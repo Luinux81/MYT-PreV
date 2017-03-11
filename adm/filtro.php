@@ -67,7 +67,7 @@ switch($origen){
                 $res="importe='" . $param . "'";
                 break;
             default:
-                //Si el nombre de la columna para filtrar no es v√°lido no se pone ning√∫n filtro
+                //Si el nombre de la columna para filtrar no es v·lido no se pone ning˙n filtro
                 $res=1;
                 break;
         }
@@ -85,13 +85,32 @@ switch($origen){
                 $res="Codigo='" . $param . "'";
                 break;
             default:
-                //Si el nombre de la columna para filtrar no es v√°lido no se pone ning√∫n filtro
+                //Si el nombre de la columna para filtrar no es v·lido no se pone ning˙n filtro
                 $res=1;
                 break;
         }
     }
         break;
 
+    //Filtro del listado de eventos
+    case "eventos":{
+    	
+    	$jump="./eventos.php";
+    	switch($columna){
+    		case "Id":
+    			$res="IdEvento='" . $param . "'";
+    			break;
+    		case "Nombre":
+    			$res="Nombre='" . $param . "'";
+    			break;
+    		default:
+    			//Si el nombre de la columna para filtrar no es v·lido no se pone ning˙n filtro
+    			$res=1;
+    			break;
+    		}
+    	}
+    break;
+    
     //Si los par√°metros para el filtro son inv√°lidos se vuelve a la interfaz de administraci√≥n general
     default:
         $res=1;
