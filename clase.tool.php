@@ -16,14 +16,15 @@ class Tool{
 	/**
 	 * Función para conectar a la base de datos de la aplicación.
 	 *
-	 * @return bool|resource Devuelve un enlace a la base de datos o false en caso de error.
+	 * @return resource Devuelve un enlace a la base de datos o lanza excepcion en caso de error.
 	 */
 	public static function conectaBD(){
 		$link=new mysqli(BD_URL,BD_USUARIO,BD_PASS,BD_NOMBRE);
 		
 		if ($link->connect_errno) {
-			Tool::log("Error en la conexión a la base de datos" . PHP_EOL . $link->connect_errno . ":" . $link->connect_error,LOG);
-			return false;
+			$mes="Error en la conexión a la base de datos" . PHP_EOL . $link->connect_errno . ":" . $link->connect_error;
+			Tool::log($mes,LOG);
+			throw new Exception($mes);
 		}
 		else{
 			return $link;
@@ -53,7 +54,7 @@ class Tool{
 
 
     /**
-     * Función para la ejecución de consultas SELECT sobre la base de datos.
+     * OBSOLETA Función para la ejecución de consultas SELECT sobre la base de datos.
      *
      * @param $sql Cadena de consulta SQL
      * @param $db Enlace a la base de datos sobre la que se realizará la consulta.
@@ -91,7 +92,7 @@ class Tool{
 	}
 
     /**
-     * Función para la ejecución de consultas sobre la base de datos que no devuelven un conjunto de registros como resultado (UPDATE, INSERT o DELETE).
+     * OBSOLETA Función para la ejecución de consultas sobre la base de datos que no devuelven un conjunto de registros como resultado (UPDATE, INSERT o DELETE).
      * @param $sql Cadena de instrucción SQL.     
      * @param $db Enlace a la base de datos sobre la que se ejecuta la consulta.
      * @return bool Devuelve true en caso de ejecución correcta y false en caso de error.
@@ -326,6 +327,8 @@ class Tool{
         $valor = str_ireplace("?","",$valor);
         $valor = str_ireplace("=","",$valor);
         $valor = str_ireplace("&","",$valor);
+        $valor = str_ireplace("*","",$valor);
+        $valor = str_ireplace(";","",$valor);
 
         return $valor;
     }
@@ -336,6 +339,7 @@ class Tool{
      */
     public static function menuPrincipal(){
     	 return "<ul>
+    	 	<li><a href='./eventos.php'>Eventos</a></li>
     		<li><a href='./compradores.php'>Compradores</a></li>
         	<li><a href='./compras.php'>Compras</a></li>
         	<li><a href='./tickets.php'>Tickets</a></li>
