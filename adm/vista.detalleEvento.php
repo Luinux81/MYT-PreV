@@ -112,7 +112,7 @@ if(isset($_SESSION["username"])){
 			
 			<label>Fin</label><input type='datetime-local' name='fin_evento' value='" . $fin . "'  />
 				<div style='clear:both;'></div>
-			
+			<input type='hidden' name='id_evento' value='" . $e->IdEvento . "' />
 			<input type='submit' value='" . $boton . "' />
 			</form>
 		</div>
