@@ -309,14 +309,17 @@ class Tool{
      * @return mixed Cadena SQL saneada.
      */
     public static function limpiaCadena($valor){
+    	/*
+    	 * Las lineas comentadas son necesarias para que funcionen los filtros de filtro.php
+    	 */
         $valor = str_ireplace("SELECT","",$valor);
         $valor = str_ireplace("COPY","",$valor);
         $valor = str_ireplace("DELETE","",$valor);
         $valor = str_ireplace("DROP","",$valor);
         $valor = str_ireplace("DUMP","",$valor);
         $valor = str_ireplace(" OR ","",$valor);
-        $valor = str_ireplace("%","",$valor);
-        $valor = str_ireplace("LIKE","",$valor);
+        //$valor = str_ireplace("%","",$valor);
+        //$valor = str_ireplace("LIKE","",$valor);
         $valor = str_ireplace("--","",$valor);
         $valor = str_ireplace("^","",$valor);
         $valor = str_ireplace("[","",$valor);
@@ -325,7 +328,7 @@ class Tool{
         $valor = str_ireplace("!","",$valor);
         $valor = str_ireplace("¡","",$valor);
         $valor = str_ireplace("?","",$valor);
-        $valor = str_ireplace("=","",$valor);
+        //$valor = str_ireplace("=","",$valor);
         $valor = str_ireplace("&","",$valor);
         $valor = str_ireplace("*","",$valor);
         $valor = str_ireplace(";","",$valor);
