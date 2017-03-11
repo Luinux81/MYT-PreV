@@ -4,7 +4,7 @@
 //Si incluimos el archivo clase.tool.php se envian cabeceras desde config.php y la llamada final a header da error
 //include_once "../clase.tool.php";
 
-//Detectamos si los par谩metros del filtro llegan por POST o GET y definimos las variables para el filtro
+//Detectamos si los par醡etros del filtro llegan por POST o GET y definimos las variables para el filtro
 
 if(isset($_POST["origen"])){
     $origen=$_POST["origen"];
@@ -25,7 +25,7 @@ else{
 $res="";
 
 
-//Definimos el formulario de origen desde el que llega la petici贸n al filtro
+//Definimos el formulario de origen desde el que llega la petici髇 al filtro
 switch($origen){
 
     //Filtro del listado de compradores
@@ -40,7 +40,7 @@ switch($origen){
                 $res="Nombre='" . $param . "'";
                 break;
             default:
-                //Si el filtro no se hace sobre el nombre o email del comprador no se pone ning煤n filtro
+                //Si el filtro no se hace sobre el nombre o email del comprador no se pone ning鷑 filtro
                 $res="1";
                 break;
         }
@@ -98,31 +98,43 @@ switch($origen){
     	$jump="./eventos.php";
     	switch($columna){
     		case "Id":
-    			$res="IdEvento='" . $param . "'";
+    			if(trim($param)==""){
+    				$res="1";
+    			}
+    			else{
+    				$res="IdEvento='" . $param . "'";
+    			}    			
     			break;
+    			
     		case "Nombre":
-    			$res="Nombre='" . $param . "'";
+    			if(trim($param)==""){
+    				$res="1";
+    			}
+    			else{
+    				$res="UPPER(Nombre) LIKE '%" . strtoupper($param) . "%'";
+    			}    			
     			break;
+    			
     		default:
     			//Si el nombre de la columna para filtrar no es v醠ido no se pone ning鷑 filtro
-    			$res=1;
+    			$res="1";
     			break;
     		}
     	}
     break;
     
-    //Si los par谩metros para el filtro son inv谩lidos se vuelve a la interfaz de administraci贸n general
+    //Si los par醡etros para el filtro son inv醠idos se vuelve a la interfaz de administraci髇 general
     default:
         $res=1;
         $jump="./admin.php";
         break;
 }
 
-//Guardamos el filtro en una variable de sesi贸n
+//Guardamos el filtro en una variable de sesi髇
 session_start();
 $_SESSION["Filtro"]=$res;
 
-//Saltamos a la p谩gina de origen de la petici贸n de filtro
+//Saltamos a la p醙ina de origen de la petici髇 de filtro
 header("Location:" . $jump . "");
 //print_r(error_get_last());
 

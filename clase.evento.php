@@ -150,6 +150,8 @@ class Evento{
 		
 		$res=Tool::ejecutaConsulta($sql, $db);
 		
+		//print_r($sql);
+		
 		Tool::desconectaBD($db);
 		
 		return $res;		

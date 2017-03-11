@@ -50,7 +50,8 @@ if(isset($_SESSION["username"])){
     }
     
     $evt=new Evento();
-    $lista=Evento::listarEventos($_SESSION["Filtro"]);
+    $lista=Evento::listarEventos($_SESSION["Filtro"]);   
+    $_SESSION["Filtro"]="1";
     
     
     if ($err!=""){
@@ -61,7 +62,7 @@ if(isset($_SESSION["username"])){
     }
 
     echo "<table style='width:100%;'><tr>
-    <td><a href='vista.detalleEvento.php'>Nuevo</a> </td>
+    <td><a href='vista.detalleEvento.php?accion=nuevo'>Nuevo</a> </td>
     <td></td>
     <td></td>
     </tr></table>";
@@ -88,7 +89,7 @@ if(isset($_SESSION["username"])){
     						<option>Cancelado</option>
     					</select></td>" . "
     			<td>
-    				<a href='#'>Editar</a>
+    				<a href='./vista.detalleEvento.php?accion=editar&id=" . $l['IdEvento'] . "'>Editar</a>
     				<a href='#'>Borrar</a>
     				<a href='#'>Duplicar</a>
     			</td>
@@ -105,6 +106,8 @@ if(isset($_SESSION["username"])){
     echo $aux . "</table>
     </div>
     </div>";
+    
+    
 
 }
 else{
