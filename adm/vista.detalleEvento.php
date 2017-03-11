@@ -30,18 +30,38 @@ switch ($accion){
 		
 		switch($genero){
 			case "Festival":
-				$option="<option selected>Festival</option><option>Club Nocturno</option><option>Otro</option>";
+				$optionGenero="<option selected>Festival</option><option>Club Nocturno</option><option>Otro</option>";
 				break;
 			case "Club Nocturno":
-				$option="<option>Festival</option><option selected>Club Nocturno</option><option>Otro</option>";
+				$optionGenero="<option>Festival</option><option selected>Club Nocturno</option><option>Otro</option>";
 				break;
 			case "Otro":
-				$option="<option selected>Festival</option><option>Club Nocturno</option><option selected>Otro</option>";
+				$optionGenero="<option selected>Festival</option><option>Club Nocturno</option><option selected>Otro</option>";
 				break;
 			default:
-				$option="<option selected>Festival</option><option>Club Nocturno</option><option>Otro</option>";
+				$optionGenero="<option selected>Festival</option><option>Club Nocturno</option><option>Otro</option>";
 				break;
 		}
+		
+		$estado=$e->Estado;
+		switch($estado){
+			case "Activo":
+				$optionEstado="<option selected>Activo</option><option>Inactivo</option><option>Agotadas</option><option>Cancelado</option>";
+				break;
+			case "Inactivo":
+				$optionEstado="<option>Activo</option><option selected>Inactivo</option><option>Agotadas</option><option>Cancelado</option>";
+				break;
+			case "Agotadas":
+				$optionEstado="<option>Activo</option><option>Inactivo</option><option selected>Agotadas</option><option>Cancelado</option>";
+				break;
+			case "Cancelado":
+				$optionEstado="<option>Activo</option><option>Inactivo</option><option>Agotadas</option><option selected>Cancelado</option>";
+				break;
+			default:
+				$optionEstado="<option selected>Activo</option><option>Inactivo</option><option>Agotadas</option><option>Cancelado</option>";
+				break;
+		}
+		
 		$lugar=$e->Lugar;
 		$direccion=$e->Direccion;
 		$ciudad=$e->Ciudad;
@@ -58,7 +78,7 @@ switch ($accion){
 	default:
 		$titulo="Nuevo Evento";
 		$url="./accion.crearEvento.php";
-		$option="<option selected>Festival</option><option>Club Nocturno</option><option>Otro</option>";
+		$optionGenero="<option selected>Festival</option><option>Club Nocturno</option><option>Otro</option>";
 		$boton="Crear evento";
 		break;
 }
@@ -88,10 +108,15 @@ if(isset($_SESSION["username"])){
 				<div style='clear:both;'></div>
 			
 			<label>Genero</label><select  id='genero_evento' name='genero_evento'>
-					" . $option . " 
+					" . $optionGenero . " 
 					</select>
 				<div style='clear:both;'></div>
 			
+			<label>Estado</label><select name='estado_evento'>
+					" . $optionEstado . " 
+					</select>		
+				<div style='clear:both;'></div>
+					
 			<label>Lugar</label><input type='text' name='lugar_evento' value='" . utf8_decode($lugar) . "' />
 				<div style='clear:both;'></div>
 			
