@@ -90,8 +90,8 @@ if(isset($_SESSION["username"])){
     					</select></td>" . "
     			<td>
     				<a href='./vista.detalleEvento.php?accion=editar&id=" . $l['IdEvento'] . "'>Editar</a>
-    				<a href='./accion.borrarEvento.php?id=" . $l['IdEvento'] . "'>Borrar</a>
-    				<a href='./accion.duplicarEvento.php?id=" . $l['IdEvento'] . "'>Duplicar</a>
+    				<a href='./controlador.eventos.php?action=borrar&id=" . $l['IdEvento'] . "'>Borrar</a>
+    				<a href='./controlador.eventos.php?action=duplicar&id=" . $l['IdEvento'] . "'>Duplicar</a>
     			</td>
     			</tr>";
     	

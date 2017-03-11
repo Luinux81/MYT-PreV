@@ -17,8 +17,9 @@ session_start();
 switch ($accion){
 	case "nuevo":
 		$titulo="Nuevo Evento";
-		$url="./accion.crearEvento.php";
-		$option="<option selected>Festival</option><option>Club Nocturno</option><option>Otro</option>";
+		$url="./controlador.eventos.php?action=nuevo";
+		$optionEstado="<option selected>Activo</option><option>Inactivo</option><option>Agotadas</option><option>Cancelado</option>";
+		$optionGenero="<option selected>Festival</option><option>Club Nocturno</option><option>Otro</option>";
 		$boton="Crear evento";
 		break;
 		
@@ -71,13 +72,14 @@ switch ($accion){
 		$inicio=Tool::adaptaFechaBDaForm($e->FechaInicio);
 		$fin=Tool::adaptaFechaBDaForm($e->FechaFin);
 		
-		$url="./accion.editarEvento.php";
+		$url="./controlador.eventos.php?action=editar";
 		$boton="Guardar cambios";
 		break;
 		
 	default:
 		$titulo="Nuevo Evento";
-		$url="./accion.crearEvento.php";
+		$url="./controlador.eventos.php?action=nuevo";
+		$optionEstado="<option selected>Activo</option><option>Inactivo</option><option>Agotadas</option><option>Cancelado</option>";
 		$optionGenero="<option selected>Festival</option><option>Club Nocturno</option><option>Otro</option>";
 		$boton="Crear evento";
 		break;
