@@ -106,7 +106,7 @@ class Evento{
 	}
 	
 	/**
-	 * Guarda la información de un evento en la tabla de Historico.
+	 * Guarda la información de un evento en la tabla de ArchivoEventos y elimina el registro de la tabla Eventos.
 	 * @param integer $idEvento Id del evento a archivar.
 	 */
 	public static function archivarEvento($idEvento){
