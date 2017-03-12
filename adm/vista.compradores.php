@@ -20,7 +20,7 @@ if(isset($_SESSION["username"])){
     echo "<div style='width: 100%;text-align: left;background-color: #983030;position: absolute;top: 0px;left: 0px; padding-left: 10px;'>
 
     <img src='cabecera.jpg' style='float: left;'>
-    <h1 style='float: left;padding-left: 10px;'>Gesti&oacute;n de entradas anticipadas</h1>
+    <h1 style='float: left;padding-left: 10px;'>MYTickets</h1>
     </div>
     <div style='width: 215px;text-align: left;background-color: #708e8b;position: absolute;top: 90px;left: 10px; padding-left: 10px;'>
 	" . Tool::menuPrincipal() . "
@@ -30,9 +30,16 @@ if(isset($_SESSION["username"])){
     echo "<div style='position: absolute;top: 70px;left: 250px;'>";
 
 
+    if($_SESSION["Filtro"]=="" || $_SESSION["Filtro"]=="1"){
+    	echo "<h3>Listado completo</h3>";
+    	$_SESSION["Filtro"]="1";
+    }else{
+    	echo "<h3>Listado filtrado</h3>";    	
+    }
+    
     $cli=new Comprador();
     $lista=$cli->listadoCompradores($_SESSION["Filtro"]);
-
+    $_SESSION["Filtro"]="1";
 
     echo "<h1>Compradores</h1>
           <form action='./filtro.php' name='filtro_compradores' method='post'>
@@ -47,12 +54,6 @@ if(isset($_SESSION["username"])){
     ";
 
 
-    if($_SESSION["Filtro"]=="" || $_SESSION["Filtro"]=="1"){
-        echo "<h3>Listado completo</h3>";
-    }else{
-        echo "<h3>Listado filtrado</h3>";
-        $_SESSION["Filtro"]="1";
-    }
 
     if ($err!=""){
         echo "<div style='width: 100%;background-color: #AA0000;'> " . $err . "</div>";
