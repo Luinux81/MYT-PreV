@@ -62,7 +62,7 @@ if(isset($_SESSION["username"])){
     }
 
     echo "<table style='width:100%;'><tr>
-    <td><a href='vista.detalleEvento.php?accion=nuevo'>Nuevo</a> </td>
+    <td><a href='vista.eventosDetalle.php?accion=nuevo'>Nuevo</a> </td>
     <td></td>
     <td></td>
     </tr></table>";
@@ -89,7 +89,7 @@ if(isset($_SESSION["username"])){
     						<option>Cancelado</option>
     					</select></td>" . "
     			<td>
-    				<a href='./vista.detalleEvento.php?accion=editar&id=" . $l['IdEvento'] . "'>Editar</a>
+    				<a href='./vista.eventosDetalle.php?accion=editar&id=" . $l['IdEvento'] . "'>Editar</a>
     				<a href='./controlador.eventos.php?action=borrar&id=" . $l['IdEvento'] . "'>Borrar</a>
     				<a href='./controlador.eventos.php?action=duplicar&id=" . $l['IdEvento'] . "'>Duplicar</a>
     			</td>
