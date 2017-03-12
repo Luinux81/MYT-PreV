@@ -343,9 +343,9 @@ class Tool{
     public static function menuPrincipal(){
     	 return "<ul>
     	 	<li><a href='./vista.eventos.php'>Eventos</a></li>
-    		<li><a href='./compradores.php'>Compradores</a></li>
-        	<li><a href='./compras.php'>Compras</a></li>
-        	<li><a href='./tickets.php'>Tickets</a></li>
+    		<li><a href='./vista.compradores.php'>Compradores</a></li>
+        	<li><a href='./vista.compras.php'>Compras</a></li>
+        	<li><a href='./vista.tickets.php'>Tickets</a></li>
     	 		</ul>
     			";
     }
