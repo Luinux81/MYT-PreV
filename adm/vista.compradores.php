@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Equipo
- * Date: 21/05/16
- * Time: 14:44
- */
 
 include_once "../clase.comprador.php";
 include_once "../clase.tool.php";
@@ -30,17 +24,6 @@ if(isset($_SESSION["username"])){
     echo "<div style='position: absolute;top: 70px;left: 250px;'>";
 
 
-    if($_SESSION["Filtro"]=="" || $_SESSION["Filtro"]=="1"){
-    	echo "<h3>Listado completo</h3>";
-    	$_SESSION["Filtro"]="1";
-    }else{
-    	echo "<h3>Listado filtrado</h3>";    	
-    }
-    
-    $cli=new Comprador();
-    $lista=$cli->listadoCompradores($_SESSION["Filtro"]);
-    $_SESSION["Filtro"]="1";
-
     echo "<h1>Compradores</h1>
           <form action='./filtro.php' name='filtro_compradores' method='post'>
             <select name='NombreParametro'>
@@ -53,7 +36,16 @@ if(isset($_SESSION["username"])){
           </form>
     ";
 
-
+    if($_SESSION["Filtro"]=="" || $_SESSION["Filtro"]=="1"){
+    	echo "<h3>Listado completo</h3>";
+    	$_SESSION["Filtro"]="1";
+    }else{
+    	echo "<h3>Listado filtrado</h3>";
+    }
+    
+    $cli=new Comprador();
+    $lista=$cli->listarCompradores($_SESSION["Filtro"]);
+    $_SESSION["Filtro"]="1";
 
     if ($err!=""){
         echo "<div style='width: 100%;background-color: #AA0000;'> " . $err . "</div>";
@@ -63,7 +55,7 @@ if(isset($_SESSION["username"])){
     }
 
     echo "<table style='width:100%;'><tr>
-    <td><a href='addComprador.php?pass=admin'><img src='png/nuevo.png'>Nuevo</a> </td>
+    <td><a href='vista.compradoresDetalle.php'>Nuevo</a> </td>
     <td></td>
     <td></td>
     </tr></table>";
@@ -77,9 +69,15 @@ if(isset($_SESSION["username"])){
     echo "<table><tr><th>#</th><th>Nombre</th><th>Apellidos</th><th>Email</th><th></th></tr>";
     foreach($lista as $l){
         $i=$i+1;
-        $aux= $aux . "<tr style='background-color:" . $aux2 . ";'><td>" . $i . "</td><td>" . $l['Nombre']  . "</td>" . "<td>" . $l['Apellidos']  . "</td>" . "<td><a href='./filtro.php?origen=compras&Parametro=" . $l['Email']  . "&NombreParametro=Email'>" . $l['Email']  . "</a></td>";
-        $aux =$aux . "<td><a href='./editComprador.php?id=" . $l['Email'] . "&pass=admin'><img src='png/editar.png'>Editar</a>
-        <a href='./accion.delComprador.php?id=" . $l['Email'] . "&pass=admin'><img src='png/borrar.png'>Borrar</a></td></tr>";
+        $aux= $aux . "<tr style='background-color:" . $aux2 . ";'>
+        		<td>" . $i . "</td>
+        		<td>" . $l['Nombre']  . "</td>
+        		<td>" . $l['Apellidos']  . "</td>
+        		<td><a href='./filtro.php?origen=compras&Parametro=" . $l['Email']  . "&NombreParametro=Email'>" . $l['Email']  . "</a></td>
+        		<td>
+        			<a href='./vista.compradoresDetalle.php?action=editar&id=" . $l['IdComprador'] . "'>Editar</a>
+        			<a href='./controlador.compradores.php?action=borrar&id=" . $l['IdComprador'] . "'>Borrar</a>
+        		</td></tr>";
 
         if($aux2==$col1){
             $aux2=$col2;

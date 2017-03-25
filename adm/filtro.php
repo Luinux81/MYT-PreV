@@ -31,13 +31,13 @@ switch($origen){
     //Filtro del listado de compradores
     case "compradores":
 
-        $jump="./compradores.php";
+        $jump="./vista.compradores.php";
         switch ($columna){
             case "Email":
-                $res="Email='" . $param . "'";
+                $res="UPPER(Email) LIKE '%" . strtoupper($param) . "%'";
                 break;
             case "Nombre":
-                $res="Nombre='" . $param . "'";
+                $res="UPPER(Nombre) LIKE '%" . strtoupper($param) . "%'";
                 break;
             default:
                 //Si el filtro no se hace sobre el nombre o email del comprador no se pone ningún filtro
