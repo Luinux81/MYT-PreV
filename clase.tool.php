@@ -242,7 +242,7 @@ class Tool{
         $msg=$msg . "<br><br><b>Detalles de la compra:</b><br><br>   " . $compra->cantidad . " x " . $compra->item . " ______________ " . $compra->precio . " euros <br><br>";
         $msg=$msg . "</body>";
 
-        $subject="TEST Preventa Transition Festival 2015";
+        $subject="TEST MYTickets";
 
         $ticket=new Ticket();
         $ticket->nombre=$compra->comprador->nombre . " " . $compra->comprador->apellidos;
@@ -344,7 +344,7 @@ class Tool{
     	 return "<ul>
     	 	<li><a href='./vista.eventos.php'>Eventos</a></li>
     		<li><a href='./vista.compradores.php'>Compradores</a></li>
-        	<li><a href='./vista.compras.php'>Compras</a></li>
+        	<li><a href='./vista.ventas.php'>Ventas</a></li>
         	<li><a href='./vista.tickets.php'>Tickets</a></li>
     	 		</ul>
     			";
