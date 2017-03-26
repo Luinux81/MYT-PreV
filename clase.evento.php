@@ -159,7 +159,7 @@ class Evento{
 	
 	/**
 	 * Devuelve un objeto de la clase Evento con la información de la base de datos del evento con Id pasado como parámetro.
-	 * @param unknown $idEvento Id del evento a obtener
+	 * @param integer $idEvento Id del evento a obtener
 	 * @return Evento Objeto con la información de la base de datos.
 	 */
 	public static function getEvento($idEvento){
