@@ -59,6 +59,6 @@ switch($accion){
 		break;
 }
 
-header("Location:'./eventos.php'");
+header("Location:'./vista.eventos.php'");
 
 ?>
