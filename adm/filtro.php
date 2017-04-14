@@ -46,6 +46,33 @@ switch($origen){
         }
         break;
 
+    case "ventas":
+    	
+    	$jump="./vista.ventas.php";
+    	switch($columna){
+    		case "Evento":
+    			if(trim($param)==""){
+    				$res="1";
+    			}
+    			else{
+    				$res="IdEvento=" . $param . " ";
+    			}    			
+    			break;
+    			
+    		case "Comprador":
+    			if(trim($param)==""){
+    				$res="1";
+    			}
+    			else{
+    				$res="IdComprador=" . $param . " ";
+    			}
+    			break;
+    		default:    			
+    			$res=1;
+    			break;
+    	}
+    	break;
+    	
     //Filtro del listado de compras
     case "compras":
 

@@ -27,8 +27,8 @@ if(isset($_SESSION["username"])){
 	echo "<h1>Ventas</h1>
           <form action='./filtro.php' name='filtro_ventas' method='post'>
             <select name='NombreParametro'>
-                <option>Email</option>
-                <option>Nombre</option>
+                <option>Evento</option>
+                <option>Comprador</option>
             </select>
             <input type='text' name='Parametro'>
             <input type='submit' name='Filtrar'>
