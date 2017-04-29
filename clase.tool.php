@@ -34,7 +34,7 @@ class Tool{
 	/**
 	 * Función para cerrar un enlace con la base de datos de la aplicación.
 	 *
-	 * @param $db Enlace a la base de datos.
+	 * @param resource $db Enlace a la base de datos.
 	 */
 	public static function desconectaBD($db){
 		$db->close();
@@ -42,9 +42,9 @@ class Tool{
 
 	/**
 	 * Función que ejecuta una consulta SQL sobre una conexión abierta.
-	 * @param unknown $sql Consulta SQL
-	 * @param unknown $db Enlace a la base de datos
-	 * @return unknown Devuelve FALSE en caso de error. Si una consulta del tipo SELECT, SHOW, DESCRIBE o EXPLAIN es exitosa, mysqli_query() devolverá un objeto mysqli_result. Para otras consultas exitosas devolverá TRUE. 
+	 * @param string $sql Consulta SQL
+	 * @param resource $db Enlace a la base de datos
+	 * @return mixed Devuelve FALSE en caso de error. Si una consulta del tipo SELECT, SHOW, DESCRIBE o EXPLAIN es exitosa, mysqli_query() devolverá un objeto mysqli_result. Para otras consultas exitosas devolverá TRUE. 
 	 */
 	public static function ejecutaConsulta($sql,$db){
 		$res=mysqli_query($db, $sql);
@@ -52,74 +52,10 @@ class Tool{
 		return $res;		
 	}
 
-
-    /**
-     * OBSOLETA Función para la ejecución de consultas SELECT sobre la base de datos.
-     *
-     * @param $sql Cadena de consulta SQL
-     * @param $db Enlace a la base de datos sobre la que se realizará la consulta.
-     * @param int $indiceArray Tipo de índice del array que devuelve la función. Por defecto MYSQL_BOTH, puede ser MYSQL_BOTH, MYSQL_NUM o MYSQL_ASSOC.
-     * @return array|bool Devuelve un array con todos los registros de la base de datos resultantes de la consulta SQL pasada como parámetro o false en caso de error.
-     */
-    public static function consulta($sql,$db,$indiceArray=MYSQL_BOTH){
-		$res = mysql_query($sql,$db);
-		
-		
-		if(!$res){
-			Tool::log("[ERROR] SQL:" . $sql,LOG);
-			return false;			
-		}
-		else{
-			if(DEBUG_SQL){
-				Tool::log("[OK] SQL:" . $sql,LOG);
-				Tool::log("FILAS:" . mysql_affected_rows(),LOG);
-			}
-			
-			if ($indiceArray!=MYSQL_BOTH && $indiceArray!=MYSQL_NUM && $indiceArray!=MYSQL_ASSOC){
-				$indiceArray=MYSQL_BOTH;
-			}
-			
-			$i=0;
-			$array=array();
-			
-			while($array[$i]=mysql_fetch_array($res,$indiceArray)){	
-				$i=$i+1;
-			}
-			array_pop($array);
-			
-			return $array;
-		}
-	}
-
-    /**
-     * OBSOLETA Función para la ejecución de consultas sobre la base de datos que no devuelven un conjunto de registros como resultado (UPDATE, INSERT o DELETE).
-     * @param $sql Cadena de instrucción SQL.     
-     * @param $db Enlace a la base de datos sobre la que se ejecuta la consulta.
-     * @return bool Devuelve true en caso de ejecución correcta y false en caso de error.
-     */
-    public static function ejecuta($sql,$db,$logErrors=false){
-
-		$res=mysql_query($sql,$db);	
-		
-		if(!$res){
-			if($logErrors){
-				Tool::log("[ERROR] SQL:" . $sql,LOG);
-			}
-			
-			echo "SQL:" . $sql . "<br/>Error: " . mysql_error($db) . "<br/>";
-			
-			return false;	
-		}
-		else{
-			return true;
-		}
-		
-	}
-
     /**
      * Esta función escribe una entrada con fecha en el archivo de log pasado como parámetro
-     * @param $linea Cadena de texto que se escribirá en el archivo.
-     * @param $file Archivo en el que se escribirá la línea.
+     * @param string $linea Cadena de texto que se escribirá en el archivo.
+     * @param string $file Archivo en el que se escribirá la línea.
      */
     public function loglinea($linea,$file){
 		error_log(date('[d/m/Y H:i]') . " " . $linea . PHP_EOL, 3, $file);
@@ -127,8 +63,8 @@ class Tool{
 
     /**
      * Versión estática de la función loglinea. Escribe una entrada con fecha en el archivo de log pasado como parámetro.
-     * @param $linea Cadena de texto que se escribirá en el archivo.
-     * @param $file Archivo en el que se escribirá la línea.
+     * @param string $linea Cadena de texto que se escribirá en el archivo.
+     * @param string $file Archivo en el que se escribirá la línea.
      */
     public static function log($linea,$file){
         error_log(date('[d/m/Y H:i]') . " " . $linea . PHP_EOL, 3, $file);
@@ -305,8 +241,8 @@ class Tool{
 
     /**
      * Función para evitar inyección de cadenas SQL maliciosas.
-     * @param $valor Cadena SQL que se va a sanear.
-     * @return mixed Cadena SQL saneada.
+     * @param string $valor Cadena SQL que se va a sanear.
+     * @return string Cadena SQL saneada.
      */
     public static function limpiaCadena($valor){
     	/*
@@ -352,7 +288,7 @@ class Tool{
 
     /**
      * Adapta el formato de una fecha al formato necesario para asignar el valor a la propiedad value de un tag HTML5 datetime-local
-     * @param unknown $fecha Fecha de entrada en un foramto aceptado por date_parse de PHP
+     * @param string $fecha Fecha de entrada en un foramto aceptado por date_parse de PHP
      * @return string Fecha en formato aceptado por el tag HTML5 datetime-local
      */
     public static function adaptaFechaBDaForm($fecha){
@@ -382,6 +318,75 @@ class Tool{
     	
     	return $res;
     }
+
+
+
+
+    /**
+     * OBSOLETA Función para la ejecución de consultas SELECT sobre la base de datos.
+     *
+     * @param $sql Cadena de consulta SQL
+     * @param $db Enlace a la base de datos sobre la que se realizará la consulta.
+     * @param int $indiceArray Tipo de índice del array que devuelve la función. Por defecto MYSQL_BOTH, puede ser MYSQL_BOTH, MYSQL_NUM o MYSQL_ASSOC.
+     * @return array|bool Devuelve un array con todos los registros de la base de datos resultantes de la consulta SQL pasada como parámetro o false en caso de error.
+     */
+    public static function consulta($sql,$db,$indiceArray=MYSQL_BOTH){
+    	$res = mysql_query($sql,$db);
+    
+    
+    	if(!$res){
+    		Tool::log("[ERROR] SQL:" . $sql,LOG);
+    		return false;
+    	}
+    	else{
+    		if(DEBUG_SQL){
+    			Tool::log("[OK] SQL:" . $sql,LOG);
+    			Tool::log("FILAS:" . mysql_affected_rows(),LOG);
+    		}
+    			
+    		if ($indiceArray!=MYSQL_BOTH && $indiceArray!=MYSQL_NUM && $indiceArray!=MYSQL_ASSOC){
+    			$indiceArray=MYSQL_BOTH;
+    		}
+    			
+    		$i=0;
+    		$array=array();
+    			
+    		while($array[$i]=mysql_fetch_array($res,$indiceArray)){
+    			$i=$i+1;
+    		}
+    		array_pop($array);
+    			
+    		return $array;
+    	}
+    }
+    
+    /**
+     * OBSOLETA Función para la ejecución de consultas sobre la base de datos que no devuelven un conjunto de registros como resultado (UPDATE, INSERT o DELETE).
+     * @param $sql Cadena de instrucción SQL.
+     * @param $db Enlace a la base de datos sobre la que se ejecuta la consulta.
+     * @return bool Devuelve true en caso de ejecución correcta y false en caso de error.
+     */
+    public static function ejecuta($sql,$db,$logErrors=false){
+    
+    	$res=mysql_query($sql,$db);
+    
+    	if(!$res){
+    		if($logErrors){
+    			Tool::log("[ERROR] SQL:" . $sql,LOG);
+    		}
+    			
+    		echo "SQL:" . $sql . "<br/>Error: " . mysql_error($db) . "<br/>";
+    			
+    		return false;
+    	}
+    	else{
+    		return true;
+    	}
+    
+    }
+    
+
+
 }
 
 ?>
