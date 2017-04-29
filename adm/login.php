@@ -1,16 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Equipo
- * Date: 1/12/14
- * Time: 11:56
- */
+include_once __DIR__ . "/../config.php";
+
 
 echo "<div style='background-color: #fff5c6;'>";
 //cabecera y menu izquierdo
 echo "<div style='width: 100%;text-align: left;background-color: #983030;position: absolute;top: 0px;left: 0px; padding-left: 10px;'>
 
-    <img src='cabecera.jpg' style='float: left;'>
+    <img src='./cabecera.jpg' style='float: left;'>
     <h1 style='float: left;padding-left: 10px;'>MYTickets</h1>
     </div>
 

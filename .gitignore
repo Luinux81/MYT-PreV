@@ -45,4 +45,5 @@ Thumbs.db
 # Especificos del proyecto #
 ############################
 config.php
+*.jpg
 

@@ -68,7 +68,7 @@ if(isset($_SESSION["username"])){
     $i=0;
 
     
-    echo "<table><tr><th>Fecha></th><th>Nombre</th><th>Estado</th><th>Editar Estado</th><th></th></tr>";
+    echo "<table><tr><th>Fecha</th><th>Nombre</th><th>Estado</th><th>Editar Estado</th><th></th></tr>";
     
     foreach ($lista as $l){
     	$i++;

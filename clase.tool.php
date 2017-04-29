@@ -1,10 +1,5 @@
 <?php
-
-//include_once SITE_ROOT . "/config.php";
-
-
-include_once "./config.php";
-include_once "../config.php";
+include_once __DIR__ . "/config.php";
 
 
 if (!defined('LOG')) define('LOG', './ipn.log');
@@ -23,7 +18,7 @@ class Tool{
 	 * @return resource Devuelve un enlace a la base de datos o lanza excepcion en caso de error.
 	 */
 	public static function conectaBD(){
-		$link=new mysqli(BD_URL,BD_USUARIO,BD_PASS,BD_NOMBRE);
+		$link=new MySQLi(BD_URL,BD_USUARIO,BD_PASS,BD_NOMBRE);
 		
 		if ($link->connect_errno) {
 			$mes="Error en la conexión a la base de datos" . PHP_EOL . $link->connect_errno . ":" . $link->connect_error;
