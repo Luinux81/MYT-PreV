@@ -1,10 +1,11 @@
 <?php
+include_once __DIR__ . "/../config.php";
 
-include_once "../fpdf.php";
-include_once "../clase.ticket.php";
-include_once "../clase.compra.php";
-include_once "../clase.comprador.php";
-include_once "../clase.tool.php";
+include_once SITE_ROOT . "/fpdf.php";
+include_once SITE_ROOT . "/clase.ticket.php";
+include_once SITE_ROOT . "/clase.compra.php";
+include_once SITE_ROOT . "/clase.comprador.php";
+include_once SITE_ROOT . "/clase.tool.php";
 
 session_start();
 

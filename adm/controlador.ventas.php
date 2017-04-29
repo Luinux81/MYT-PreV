@@ -1,6 +1,8 @@
 <?php
-include_once '../clase.venta.php';
-include_once '../clase.tool.php';
+include_once __DIR__ . "/../config.php";
+
+include_once SITE_ROOT . "/clase.venta.php";
+include_once SITE_ROOT . "/clase.tool.php";
 
 
 $accion=$_GET['action'];

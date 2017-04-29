@@ -2,9 +2,10 @@
 
 //ob_start();
 
+include_once __DIR__ . "/../config.php";
 
-include_once "../clase.usuario.php";
-include_once "../clase.tool.php";
+include_once SITE_ROOT . "/clase.usuario.php";
+include_once SITE_ROOT . "/clase.tool.php";
 
 
 session_start();

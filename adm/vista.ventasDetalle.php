@@ -2,10 +2,11 @@
 
 header('Content-Type: text/html; charset=UTF-8');
 
-include_once "../clase.comprador.php";
-include_once "../clase.venta.php";
-include_once "../clase.evento.php";
-include_once "../clase.tool.php";
+include_once __DIR__ . "/../config.php";
+include_once SITE_ROOT . "/clase.comprador.php";
+include_once SITE_ROOT . "/clase.venta.php";
+include_once SITE_ROOT . "/clase.evento.php";
+include_once SITE_ROOT . "/clase.tool.php";
 
 $err=$_GET['err'];
 $res=$_GET['res'];

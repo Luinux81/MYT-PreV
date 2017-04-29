@@ -1,7 +1,7 @@
 <?php
-include_once "./clase.ticket.php";
-include_once "./clase.tipoTicket.php";
-include_once "./clase.tool.php";
+include_once SITE_ROOT . "/clase.ticket.php";
+include_once SITE_ROOT . "/clase.tipoTicket.php";
+include_once SITE_ROOT . "/clase.tool.php";
 //include_once "./clase.oferta.php";
 
 if (!defined('LOG')) define('LOG', './ipn.log');

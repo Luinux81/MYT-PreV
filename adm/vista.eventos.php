@@ -1,13 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Equipo
- * Date: 21/05/16
- * Time: 14:44
- */
-
-include_once "../clase.evento.php";
-include_once "../clase.tool.php";
+include_once __DIR__ . "/../config.php";
+include_once SITE_ROOT . "/clase.evento.php";
+include_once SITE_ROOT . "/clase.tool.php";
 
 $err=$_GET['err'];
 $res=$_GET['res'];

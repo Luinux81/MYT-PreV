@@ -1,7 +1,11 @@
 <?php
 
+//include_once SITE_ROOT . "/config.php";
+
+
 include_once "./config.php";
 include_once "../config.php";
+
 
 if (!defined('LOG')) define('LOG', './ipn.log');
 define ("DEBUG_SQL",0);

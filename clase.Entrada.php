@@ -1,5 +1,5 @@
 <?php
-include_once "./clase.tool.php";
+include_once SITE_ROOT . "/clase.tool.php";
 
 
 class Entrada{
