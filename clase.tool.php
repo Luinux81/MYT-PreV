@@ -270,7 +270,12 @@ class Tool{
 
         return $valor;
     }
+ 
     
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //					FUNCIONES PARA LAS VISTAS WEB															//
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
     /**
      * Función para escribir el menú principal.
      * 
@@ -287,7 +292,8 @@ class Tool{
     
     public static function inicioDocWeb(){
     	$aux="
- 				<body>
+ 				". Tool::cabeceraGraficos() . "
+    			<body>
     				<div id='divTop'>
 	    				<div style='display:block; width: 100%;text-align: left;background-color: #983030;position: absolute;top: 0px;left: 0px; padding-left: 10px;'>
 						    <a href='admin.php'><img src='cabecera.jpg' style='float: left;'></a>
@@ -304,6 +310,74 @@ class Tool{
     	return $aux;
     }
 
+    public static function cabeceraGraficos(){
+    	$aux="
+    			  <head>
+				    <!--Load the AJAX API-->
+				    <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
+    				<script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>
+    			
+				    <script type='text/javascript'>
+				
+				      // Load the Visualization API and the corechart package.
+				      google.charts.load('current', {'packages':['corechart']});
+				
+				      // Set a callback to run when the Google Visualization API is loaded.
+				      google.charts.setOnLoadCallback(drawChart);
+				
+				      // Callback that creates and populates a data table,
+				      // instantiates the pie chart, passes in the data and
+				      // draws it.
+				      function drawChart() {
+				
+		    			var datos = $.ajax({
+					        url:'accion.datosGrafica.php',
+					        type:'post',
+					        dataType:'json',
+					        async:false
+					      }).responseText;
+    			
+    					//document.write(datos);
+    					
+    					var primero=true;
+    					var data = new google.visualization.DataTable();
+    			
+    					datos=JSON.parse(datos);
+    			
+    					for(i in datos){
+    						if(primero){
+    							data.addColumn('string','Fecha');
+    							data.addColumn('number','Importe');
+    							primero=false;
+    						}
+    						else{
+    							var fecha=datos[i][0];
+    							var importe=Number(datos[i][1]);
+    							fecha=fecha.substr(0,10);
+    							
+    							//document.write(fecha+' '+importe+'<br/>');
+    			
+    							data.addRow([fecha,importe]);
+    						}
+    					}
+				
+				        // Set chart options
+				        var options = {'title':'Ventas',
+    								   'vAxis': {title: 'Importe'},
+      								   'hAxis': {title: 'Fecha'},
+				                       'width':400,
+				                       'height':300};
+				
+				        // Instantiate and draw our chart, passing in some options.
+				        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+				        chart.draw(data, options);
+				      }
+				    </script>
+				  </head>	
+    		";	
+    	return $aux;
+    }
+    
     /**
      * Adapta el formato de una fecha al formato necesario para asignar el valor a la propiedad value de un tag HTML5 datetime-local
      * @param string $fecha Fecha de entrada en un foramto aceptado por date_parse de PHP
@@ -338,7 +412,9 @@ class Tool{
     }
 
 
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //					FUNCIONES OBSOLETAS															//
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * OBSOLETA Función para la ejecución de consultas SELECT sobre la base de datos.

@@ -106,7 +106,7 @@ class Venta{
 	public static function listarVentas($filtro="1"){
 		$db=Tool::conectaBD();
 		
-		$sql="SELECT * FROM Ventas WHERE " . Tool::limpiaCadena($filtro);
+		$sql="SELECT * FROM Ventas WHERE " . Tool::limpiaCadena($filtro) . " ORDER BY Fecha";
 		
 		$res=Tool::ejecutaConsulta($sql, $db);
 		
