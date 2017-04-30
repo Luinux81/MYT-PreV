@@ -294,8 +294,8 @@ class Tool{
     	$aux="
  				". Tool::cabeceraGraficos() . "
     			<body>
-    				<div id='divTop'>
-	    				<div style='display:block; width: 100%;text-align: left;background-color: #983030;position: absolute;top: 0px;left: 0px; padding-left: 10px;'>
+    				<div id='divTop' style='clear:both; float:left;width:100%;'>
+	    				<div style='display:block; width: 100%;background-color: #983030; padding-left: 10px; clear:both; float:left;'>
 						    <a href='admin.php'><img src='cabecera.jpg' style='float: left;'></a>
 	    					<h1 style='float: left;'>MYT Tickets</h1>	    				
 	    					<div style='display:block; width: 200px;text-align: left;background-color: #708e8b; padding-left: 10px;float:right;'>
@@ -303,12 +303,20 @@ class Tool{
     					</div>
     					</div>
     				</div>
-    
+    				<div id='divPrincipal'>
     			
     			";
     	
     	return $aux;
     }
+    
+    public static function finDocWeb(){
+    	$aux="
+    			</div>
+    			</body>
+    			";
+    }
+    
 
     public static function cabeceraGraficos(){
     	$aux="
@@ -348,6 +356,7 @@ class Tool{
     						if(primero){
     							data.addColumn('string','Fecha');
     							data.addColumn('number','Importe');
+    							data.addColumn('number','Importe');
     							primero=false;
     						}
     						else{
@@ -357,7 +366,7 @@ class Tool{
     							
     							//document.write(fecha+' '+importe+'<br/>');
     			
-    							data.addRow([fecha,importe]);
+    							data.addRow([fecha,importe,importe]);
     						}
     					}
 				
@@ -365,8 +374,9 @@ class Tool{
 				        var options = {'title':'Ventas',
     								   'vAxis': {title: 'Importe'},
       								   'hAxis': {title: 'Fecha'},
-				                       'width':400,
-				                       'height':300};
+    								   'seriesType': 'bars',
+      								   'series': {0: {type: 'bars',color:'green'},1: {type: 'line',visibleInLegend: false,color:'blue',curveType:'function'}}
+    								  };
 				
 				        // Instantiate and draw our chart, passing in some options.
 				        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
