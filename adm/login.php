@@ -2,7 +2,6 @@
 include_once __DIR__ . "/../config.php";
 
 
-echo "<div style='background-color: #fff5c6;'>";
 //cabecera y menu izquierdo
 echo "<div style='width: 100%;text-align: left;background-color: #983030;position: absolute;top: 0px;left: 0px; padding-left: 10px;'>
 
@@ -34,7 +33,6 @@ echo "<h1>Login</h1>
 echo "</table>";
 
 echo "</table>
-    </div>
     </div>";
 
 ?>

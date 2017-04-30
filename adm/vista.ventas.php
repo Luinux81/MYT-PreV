@@ -10,17 +10,9 @@ $res=$_GET['res'];
 session_start();
 
 if(isset($_SESSION["username"])){
-	echo "<div style='background-color: #fff5c6;'>";
+	
 	//cabecera y menu izquierdo
-	echo "<div style='width: 100%;text-align: left;background-color: #983030;position: absolute;top: 0px;left: 0px; padding-left: 10px;'>
-
-    <img src='cabecera.jpg' style='float: left;'>
-    <h1 style='float: left;padding-left: 10px;'>MYTickets</h1>
-    </div>
-    <div style='width: 215px;text-align: left;background-color: #708e8b;position: absolute;top: 90px;left: 10px; padding-left: 10px;'>
-	" . Tool::menuPrincipal() . "
-    </div>
-    ";
+	echo Tool::inicioDocWeb();
 
 	echo "<div style='position: absolute;top: 70px;left: 250px;'>";
 
@@ -94,9 +86,7 @@ if(isset($_SESSION["username"])){
 
 	echo "</table>
     </div>
-    </div>";
-
-	echo SITE_ROOT;
+    ";
 }
 else{
 	header("Location:login.php");

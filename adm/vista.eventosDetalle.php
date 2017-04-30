@@ -89,19 +89,10 @@ if(isset($_SESSION["username"])){
 	echo "<html>
 				<header>
 				<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
-				</header>
-				<body><div style='background-color: #fff5c6;'>";
-	//cabecera y menu izquierdo
-	echo "<div style='width: 100%;text-align: left;background-color: #983030;position: absolute;top: 0px;left: 0px; padding-left: 10px;'>
-
-    <img src='cabecera.jpg' style='float: left;'>
-    <h1 style='float: left;padding-left: 10px;'>MYTickets</h1>
-    </div>
-    <div style='width: 215px;text-align: left;background-color: #708e8b;position: absolute;top: 90px;left: 10px; padding-left: 10px;'>
-	" . Tool::menuPrincipal() . "
-    </div>
-    ";
-
+				</header>";
+	
+	echo Tool::inicioDocWeb();
+	
 	echo "<div style='position: absolute;top: 70px;left: 250px;'>
 			<h1>" . $titulo . "</h1>
 			<form action='" . $url . "' method='POST' >
@@ -144,7 +135,7 @@ if(isset($_SESSION["username"])){
 			</form>
 		</div>
 		</div>
-		</div></body></html>
+		</body></html>
 		";
 
 

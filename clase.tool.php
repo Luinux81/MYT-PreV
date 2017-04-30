@@ -284,6 +284,25 @@ class Tool{
     	 		</ul>
     			";
     }
+    
+    public static function inicioDocWeb(){
+    	$aux="
+ 				<body>
+    				<div id='divTop'>
+	    				<div style='display:block; width: 100%;text-align: left;background-color: #983030;position: absolute;top: 0px;left: 0px; padding-left: 10px;'>
+						    <a href='admin.php'><img src='cabecera.jpg' style='float: left;'></a>
+	    					<h1 style='float: left;'>MYT Tickets</h1>	    				
+	    					<div style='display:block; width: 200px;text-align: left;background-color: #708e8b; padding-left: 10px;float:right;'>
+	    					" . Tool::menuPrincipal() . "
+    					</div>
+    					</div>
+    				</div>
+    
+    			
+    			";
+    	
+    	return $aux;
+    }
 
     /**
      * Adapta el formato de una fecha al formato necesario para asignar el valor a la propiedad value de un tag HTML5 datetime-local
