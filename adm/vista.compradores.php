@@ -12,7 +12,7 @@ if(isset($_SESSION["username"])){
     //cabecera y menu izquierdo
     echo Tool::inicioDocWeb();
 
-    echo "<div style='position: absolute;top: 70px;left: 250px;'>";
+    echo "<div>";
 
 
     echo "<h1>Compradores</h1>

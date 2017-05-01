@@ -93,7 +93,7 @@ if(isset($_SESSION["username"])){
 	
 	echo Tool::inicioDocWeb();
 	
-	echo "<div style='position: absolute;top: 70px;left: 250px;'>
+	echo "<div>
 			<h1>" . $titulo . "</h1>
 			<form action='" . $url . "' method='POST' >
 			
