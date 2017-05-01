@@ -1,6 +1,8 @@
 <?php
 
+include_once __DIR__ ."/config.php";
 include_once SITE_ROOT . "/clase.tool.php";
+include_once SITE_ROOT . "/clase.Entrada.php";
 
 
 class Venta{
@@ -140,6 +142,20 @@ class Venta{
 		Tool::desconectaBD($db);
 		
 		return $v;		
+	}
+	
+	public static function getEntradas($idVenta){
+		$db=Tool::conectaBD();
+		
+		$sql="SELECT * FROM Entradas AS e 
+				INNER JOIN TiposEntrada AS te ON e.IdTipoEntrada=te.IdTipoEntrada 
+				WHERE e.idVenta='" . Tool::limpiaCadena($idVenta) . "'";
+		
+		$res=Tool::ejecutaConsulta($sql, $db);		
+		
+		Tool::desconectaBD($db);
+		
+		return $res;	
 	}
 	
 }

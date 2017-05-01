@@ -294,11 +294,11 @@ class Tool{
     	$aux="
  				". Tool::cabeceraGraficos() . "
     			<body>
-    				<div id='divTop' style='clear:both; float:left;width:100%;'>
-	    				<div style='display:block; width: 100%;background-color: #983030; padding-left: 10px; clear:both; float:left;'>
+    				<div id='divTop'>
+	    				<div id='divTopLeft'>
 						    <a href='admin.php'><img src='cabecera.jpg' style='float: left;'></a>
-	    					<h1 style='float: left;'>MYT Tickets</h1>	    				
-	    					<div style='display:block; width: 200px;text-align: left;background-color: #708e8b; padding-left: 10px;float:right;'>
+	    					<h1 id='tituloApp'>MYT Tickets</h1>	    				
+	    					<div id='divMenuPrincipal'>
 	    					" . Tool::menuPrincipal() . "
     					</div>
     					</div>
@@ -324,7 +324,8 @@ class Tool{
 				    <!--Load the AJAX API-->
 				    <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
     				<script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>
-    			
+    				<LINK href='css/estilosmyt.css' rel='stylesheet' type='text/css'>
+    						
 				    <script type='text/javascript'>
 				
 				      // Load the Visualization API and the corechart package.
@@ -356,26 +357,27 @@ class Tool{
     						if(primero){
     							data.addColumn('string','Fecha');
     							data.addColumn('number','Importe');
-    							data.addColumn('number','Importe');
+    							data.addColumn('number','Entradas');
     							primero=false;
     						}
     						else{
     							var fecha=datos[i][0];
     							var importe=Number(datos[i][1]);
+    							var cantidad=Number(datos[i][2]);
     							fecha=fecha.substr(0,10);
     							
     							//document.write(fecha+' '+importe+'<br/>');
     			
-    							data.addRow([fecha,importe,importe]);
+    							data.addRow([fecha,importe,cantidad]);
     						}
     					}
 				
 				        // Set chart options
 				        var options = {'title':'Ventas',
-    								   'vAxis': {title: 'Importe'},
+    								   'vAxes': {0:{title: 'Importe'},1:{title: 'Entradas',ticks: [0,1,2,3,4]}},
       								   'hAxis': {title: 'Fecha'},
     								   'seriesType': 'bars',
-      								   'series': {0: {type: 'bars',color:'green'},1: {type: 'line',visibleInLegend: false,color:'blue',curveType:'function'}}
+      								   'series': {0: {type: 'bars',color:'green',targetAxisIndex:0},1: {type: 'line',visibleInLegend: false,color:'blue',curveType:'function',targetAxisIndex:1}}
     								  };
 				
 				        // Instantiate and draw our chart, passing in some options.

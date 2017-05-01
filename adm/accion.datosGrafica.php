@@ -5,11 +5,17 @@ include_once SITE_ROOT . '/clase.venta.php';
 
 $ventas=Venta::listarVentas();
 
-$res[0]=["fecha","importe"];
+$res[0]=["fecha","importe","cantidad"];
 $i=1;
 
 foreach ($ventas as $v){
-	$res[$i]=array($v['Fecha'],$v['Importe']);
+	$entradas=Venta::getEntradas($v['IdVenta']);	
+	
+	
+	$aux=$entradas->fetch_all();
+	
+	
+	$res[$i]=array($v['Fecha'],$v['Importe'],count($aux));
 	$i++;
 }
 echo json_encode($res);

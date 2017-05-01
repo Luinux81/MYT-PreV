@@ -10,7 +10,7 @@ if(isset($_SESSION["username"])){
 	echo Tool::inicioDocWeb();
 	
     echo "
-    		<div id='chart_div' style='clear:both; float:left;width:100%;height:300px;'></div>
+    		<div id='chart_div'></div>
     	";
     
     echo Tool::finDocWeb();
