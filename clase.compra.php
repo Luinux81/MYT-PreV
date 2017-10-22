@@ -175,7 +175,7 @@ class Compra{
 	/**
 	 * Esta función devuelve las compras guardadas en la base de datos
 	 * @param string $filtro Cadena para la clausula WHERE
-	 * @return unknown Array de resultados
+	 * @return array Array de resultados
 	 */
     public function listadoCompras($filtro="1"){
         $db=Tool::conectaBD();
@@ -195,7 +195,7 @@ class Compra{
 
     /**
      * Esta función obtiene la información de compra de la base de datos y la guarda en el objeto invocador.
-     * @param unknown $id ID de la compra
+     * @param int $id ID de la compra
      */
     public function getCompra($id){
         $db=Tool::conectaBD();
@@ -243,7 +243,7 @@ class Compra{
 
     /**
      * Esta función obtiene información de la base de datos y devuelve un array de objetos Ticket asociados a una compra.
-     * @param unknown $id ID de la compra
+     * @param string $id ID de la compra
      * @return Ticket[] Tickets asociados a la compra
      */
     public static function getTickets($id){
@@ -282,8 +282,8 @@ class Compra{
 
     /**
      * Esta función crea registros de nuevos tickets en la base de datos.
-     * @param unknown $idCompra ID de la compra a la que estarán asociados los tickets.
-     * @param unknown $num Número de tickets a añadir
+     * @param string $idCompra ID de la compra a la que estarán asociados los tickets.
+     * @param int $num Número de tickets a añadir
      * @return boolean
      */
     public static function addTickets($idCompra,$num){
@@ -328,8 +328,8 @@ class Compra{
 
     /**
      * Esta función elimina registros de tickets en la base de datos
-     * @param unknown $idCompra ID de la compra 
-     * @param unknown $num Número de tickets a eliminar
+     * @param string $idCompra ID de la compra 
+     * @param int $num Número de tickets a eliminar
      * @return boolean
      */
     public static function deleteTickets($idCompra,$num){
@@ -415,11 +415,11 @@ class Compra{
 
     /**
      * Función para modificar el registro de una compra existente en la base de datos.
-     * @param unknown $nuevo_ID Nuevo ID de la compra
-     * @param unknown $nuevo_email Email del comprador
-     * @param unknown $nueva_cantidad Cantidad
-     * @param unknown $nuevo_importe Importe
-     * @param unknown $idCompra ID de la compra existente
+     * @param string $nuevo_ID Nuevo ID de la compra
+     * @param string $nuevo_email Email del comprador
+     * @param int $nueva_cantidad Cantidad
+     * @param float $nuevo_importe Importe
+     * @param string $idCompra ID de la compra existente
      * @return boolean
      */
     public function updateCompra($nuevo_ID,$nuevo_email,$nueva_cantidad, $nuevo_importe,$idCompra){
@@ -450,7 +450,7 @@ class Compra{
 
     /**
      * Función para borrar una compra de la tabla Compras.
-     * @param unknown $id Id de la compra.
+     * @param string $id Id de la compra.
      */
     public static function deleteCompra($id){
         $db=Tool::conectaBD();
@@ -496,7 +496,7 @@ class Compra{
 
     /**
      * Función para mover una compra de la tabla Compras a HistoricoCompras. El registro desaparecerá de la tabla Compras.
-     * @param unknown $id Id de la compra.
+     * @param string $id Id de la compra.
      */
     public static function archivaCompra($id){
     	$db=Tool::conectaBD();

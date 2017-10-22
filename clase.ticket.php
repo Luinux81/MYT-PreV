@@ -376,7 +376,7 @@ public static function listadoTicketsPDF(){
 
 /**
  * Función que importa los datos del ticket de la base de datos al objeto Ticket que la invoca.
- * @param unknown $id Id del ticket a importar.
+ * @param string $id Id del ticket a importar.
  */
 public function getTicket($id){
 	$db=Tool::conectaBD();
