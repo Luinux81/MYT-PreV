@@ -31,7 +31,7 @@ class Usuario {
 
     public static function loginValido($name,$pass){
         $db=Tool::conectaBD();
-
+        
         $sql="SELECT * FROM Usuarios WHERE Nombre='" . $name ."'";
 
         $res=Tool::ejecutaConsulta($sql,$db);
@@ -46,6 +46,7 @@ class Usuario {
         $res->free();
         
         Tool::desconectaBD($db);
+        
         return $aux;
 
     }

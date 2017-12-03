@@ -1,6 +1,7 @@
 <?php
 include_once __DIR__ . "/../config.php";
 
+session_start();
 
 //cabecera y menu izquierdo
 echo "<div style='width: 100%;text-align: left;background-color: #983030;position: absolute;top: 0px;left: 0px; padding-left: 10px;'>
@@ -13,8 +14,14 @@ echo "<div style='width: 100%;text-align: left;background-color: #983030;positio
 
 echo "<div style='position: absolute;top: 70px;left: 250px;'>";
 
-echo "<h1>Login</h1>
-<form method='post' action='./accion.login.php'>
+echo "<h1>Login</h1>";
+
+if(isset($_SESSION["LastError"])){
+    echo "<h4>ERROR:" . $_SESSION["LastError"] . "</h4>";
+    $_SESSION["LastError"]=null;
+}
+
+echo "<form method='post' action='./accion.login.php'>
     <table>
         <tr>
             <td>Nombre de usuario</td>

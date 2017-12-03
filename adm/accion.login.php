@@ -13,14 +13,20 @@ session_start();
 $username=$_POST['username'];
 $pass=$_POST['password'];
 
-if(Usuario::loginValido($username,$pass)){
+try {
+    $aux=Usuario::loginValido($username, $pass);
+} 
+catch (Exception $e) {
+    $aux=false;
+    $_SESSION["LastError"]=$e->getMessage();
+}
+
+if($aux){
     $_SESSION["username"]=$username;
     $aux="Location:admin.php";
-    //print_r("OK");
 }
 else{
     $aux="Location:login.php?err";
-    //print_r("NO");
 }
 
 header($aux);

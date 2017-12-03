@@ -21,13 +21,13 @@ class Tool{
 		$link=new MySQLi(BD_URL,BD_USUARIO,BD_PASS,BD_NOMBRE);
 		
 		if ($link->connect_errno) {
-			$mes="Error en la conexión a la base de datos" . PHP_EOL . $link->connect_errno . ":" . $link->connect_error;
+			$mes="Error en la conexión a la base de datos:" . $link->connect_error;
 			Tool::log($mes,LOG);
 			throw new Exception($mes);
 		}
 		else{
 			return $link;
-		}
+		}		
 	}
 
 	/**
@@ -71,8 +71,8 @@ class Tool{
 
     /**
      * Esta función recibe como parámetro un objeto Compra, a partir del cual genera un archivo PDF con los tickets correspondientes y los envia adjuntos en un email. Registra en el archivo de log el resultado del envio de cada email.
-     * @param string $resultado Este parámetro no se usa.
-     * @param Compra $compra Objeto compra con todos los datos. (NO SE VERIFICA QUE EL OBJETO TENGA LOS DATOS CORRECTOS)
+     * @param $resultado Este parámetro no se usa.
+     * @param $compra Objeto compra con todos los datos. (NO SE VERIFICA QUE EL OBJETO TENGA LOS DATOS CORRECTOS)
      */
     public static function notificaMAIL($resultado,$compra){
         $msg="<html><head></head><body><img src='" . EMAIL_URL_IMG_CABECERA . "' width='350' height='100' >";
@@ -167,8 +167,8 @@ class Tool{
 
     /**
      * Versión de prueba de la funcion notificaMAIL, esta función no registra en el archivo de log el resultado del envio de los emails.
-     * @param string $resultado Este parámetro no se usa.
-     * @param Compra $compra Objeto compra con todos los datos. (NO SE VERIFICA QUE EL OBJETO TENGA LOS DATOS CORRECTOS)
+     * @param $resultado Este parámetro no se usa.
+     * @param $compra Objeto compra con todos los datos. (NO SE VERIFICA QUE EL OBJETO TENGA LOS DATOS CORRECTOS)
      * @return bool Devuelve false en caso de error y true en caso contrario.
      */
     public function notificaMAIL2($resultado,$compra){
@@ -431,8 +431,8 @@ class Tool{
     /**
      * OBSOLETA Función para la ejecución de consultas SELECT sobre la base de datos.
      *
-     * @param string $sql Cadena de consulta SQL
-     * @param object $db Enlace a la base de datos sobre la que se realizará la consulta.
+     * @param $sql Cadena de consulta SQL
+     * @param $db Enlace a la base de datos sobre la que se realizará la consulta.
      * @param int $indiceArray Tipo de índice del array que devuelve la función. Por defecto MYSQL_BOTH, puede ser MYSQL_BOTH, MYSQL_NUM o MYSQL_ASSOC.
      * @return array|bool Devuelve un array con todos los registros de la base de datos resultantes de la consulta SQL pasada como parámetro o false en caso de error.
      */
@@ -468,8 +468,8 @@ class Tool{
     
     /**
      * OBSOLETA Función para la ejecución de consultas sobre la base de datos que no devuelven un conjunto de registros como resultado (UPDATE, INSERT o DELETE).
-     * @param string $sql Cadena de instrucción SQL.
-     * @param object $db Enlace a la base de datos sobre la que se ejecuta la consulta.
+     * @param $sql Cadena de instrucción SQL.
+     * @param $db Enlace a la base de datos sobre la que se ejecuta la consulta.
      * @return bool Devuelve true en caso de ejecución correcta y false en caso de error.
      */
     public static function ejecuta($sql,$db,$logErrors=false){
