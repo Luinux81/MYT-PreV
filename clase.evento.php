@@ -148,9 +148,14 @@ class Evento{
 		
 		$sql="SELECT * FROM Eventos WHERE " . Tool::limpiaCadena($filtro);
 		
-		$res=Tool::ejecutaConsulta($sql, $db);
+		$aux=Tool::ejecutaConsulta($sql, $db);
 		
-		//print_r($sql);
+		$i=0;
+		$res=[];
+		foreach ($aux as $a){
+		    $res[$i]=Evento::array2Evento($a);
+		    $i++;
+		}
 		
 		Tool::desconectaBD($db);
 		
@@ -190,7 +195,23 @@ class Evento{
 		return $evt;		
 	}
 	
-
+    private static function array2Evento($array){
+        $evt=new Evento();
+        $evt->IdEvento=$array['IdEvento'];
+        $evt->Nombre=$array['Nombre'];
+        $evt->FechaInicio=$array['FechaInicio'];
+        $evt->FechaFin=$array['FechaFin'];
+        $evt->AforoEvento=$array['AforoEvento'];
+        $evt->EntradasVendidas=$array['EntradasVendidas'];
+        $evt->TipoEvento=$array['TipoEvento'];
+        $evt->Estado=$array['Estado'];
+        $evt->Lugar=$array['Lugar'];
+        $evt->Direccion=$array['Direccion'];
+        $evt->Ciudad=$array['Ciudad'];
+        $evt->Pais=$array['Pais'];
+        
+        return $evt;
+    }
 }
 
 ?>

@@ -34,7 +34,6 @@ if(isset($_SESSION["username"])){
         echo "<h3>Listado filtrado</h3>";        
     }
     
-    $evt=new Evento();
     $lista=Evento::listarEventos($_SESSION["Filtro"]);   
     $_SESSION["Filtro"]="1";
     
@@ -45,6 +44,7 @@ if(isset($_SESSION["username"])){
     if ($res!=""){
         echo "<div style='width: 100%;background-color: #00AA00;'> " . $res . "</div>";
     }
+
 
     echo "<table style='width:100%;'><tr>
     <td><a href='vista.eventosDetalle.php?accion=nuevo'>Nuevo</a> </td>
@@ -61,12 +61,13 @@ if(isset($_SESSION["username"])){
     
     echo "<table><tr><th>Fecha</th><th>Nombre</th><th>Estado</th><th>Editar Estado</th><th></th></tr>";
     
+    $l=new Evento();
+    
     foreach ($lista as $l){
-    	$i++;
-    	$aux=$aux . "<tr style='background-color:" . $aux2 . ";'>
-    			<td>" . $l['FechaInicio'] . "</td>" . "
-    			<td>" . $l['Nombre'] . "</td>" . "
-    			<td>" . $l['Estado'] . "</td>" . "
+        $aux=$aux . "<tr style='background-color:" . $aux2 . ";'>
+    			<td>" . $l->FechaInicio . "</td>" . "
+    			<td>" . $l->Nombre . "</td>" . "
+    			<td>" . $l->Estado . "</td>" . "
     			<td>" . "<select>
     						<option>Activo</option>
     						<option>Inactivo</option>
@@ -74,12 +75,11 @@ if(isset($_SESSION["username"])){
     						<option>Cancelado</option>
     					</select></td>" . "
     			<td>
-    				<a href='./vista.eventosDetalle.php?accion=editar&id=" . $l['IdEvento'] . "'>Editar</a>
-    				<a href='./controlador.eventos.php?action=borrar&id=" . $l['IdEvento'] . "'>Borrar</a>
-    				<a href='./controlador.eventos.php?action=duplicar&id=" . $l['IdEvento'] . "'>Duplicar</a>
+    				<a href='./vista.eventosDetalle.php?accion=editar&id=" . $l->IdEvento . "'>Editar</a>
+    				<a href='./controlador.eventos.php?action=borrar&id=" . $l->IdEvento . "'>Borrar</a>
+    				<a href='./controlador.eventos.php?action=duplicar&id=" . $l->IdEvento . "'>Duplicar</a>
     			</td>
     			</tr>";
-    	
     	if($aux2==$col1){
     		$aux2=$col2;
     	}
