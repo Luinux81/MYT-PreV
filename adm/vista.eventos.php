@@ -34,8 +34,13 @@ if(isset($_SESSION["username"])){
         echo "<h3>Listado filtrado</h3>";        
     }
     
-    $lista=Evento::listarEventos($_SESSION["Filtro"]);   
-    $_SESSION["Filtro"]="1";
+    try {
+        $lista=Evento::listarEventos($_SESSION["Filtro"]);
+        $_SESSION["Filtro"]="1";
+    } 
+    catch (Exception $e) {
+        echo "<h4>ERROR:" . $e->getMessage() . "</h4>";
+    }    
     
     
     if ($err!=""){
