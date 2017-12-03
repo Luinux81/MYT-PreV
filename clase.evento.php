@@ -130,6 +130,17 @@ class Evento{
 					'" . $e->Pais . "')";
 			
 			if(Tool::ejecutaConsulta($sql, $db)){
+			    
+			    $ventas=Evento::getVentas($idEvento);
+			    foreach ($ventas as $v){
+			        Venta::archivarVenta($v->IdVenta);
+			    }
+			    
+			    $tipos=TipoEntrada::listarTiposEntrada("IdEvento='" . $idEvento . "'");
+			    foreach ($tipos as $tipo) {
+			        TipoEntrada::archivarTipoEntrada($tipo->IdTipoEntrada);
+			    }
+			    
 				Evento::borrarEvento($idEvento);
 			}
 		}

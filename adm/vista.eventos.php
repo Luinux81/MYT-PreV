@@ -83,6 +83,7 @@ if(isset($_SESSION["username"])){
     				<a href='./vista.eventosDetalle.php?accion=editar&id=" . $l->IdEvento . "'>Editar</a>
     				<a href='./controlador.eventos.php?action=borrar&id=" . $l->IdEvento . "'>Borrar</a>
     				<a href='./controlador.eventos.php?action=duplicar&id=" . $l->IdEvento . "'>Duplicar</a>
+                    <a href='./controlador.eventos.php?action=archivar&id=" . $l->IdEvento . "'>Archivar</a>
     			</td>
     			</tr>";
     	if($aux2==$col1){

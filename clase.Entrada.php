@@ -62,16 +62,50 @@ class Entrada{
 	}
 
 	/**
+	 * Guarda la información de una entrada en la tabla de ArchivoEntradas y elimina el registro de la tabla Entradas.
+	 * @param string $idEntrada Id de la entrada a archivar.
+	 */
+	public static function archivarEntrada($idEntrada){
+	    $db=Tool::conectaBD();
+	    
+	    $e=new Entrada;
+	    $e=Entrada::getEntrada($idEntrada);
+	    
+	    $sql="INSERT INTO ArchivoEntradas 
+            (IdEntrada,IdVenta,IdTipoEntrada) VALUES " .
+            "('" . $e->idEntrada . "','" . $e->idVenta . "','" . $e->idTipoEntrada . "')" ;
+	    
+	    if(Tool::ejecutaConsulta($sql, $db)){
+	        Entrada::borrarEntrada($idEntrada);
+	    }
+	    
+	    Tool::desconectaBD($db);
+	}
+	
+	/**
 	 * Devuelve un array con todos las entradas que cumplen el filtro.
 	 * @param string $filtro Clausula WHERE de la consulta SQL que obtiene las entrada. Su valor por defecto es 1.
-	 * @return array Array con las entrada que cumplen el filtro obtenidas de la base de datos.
+	 * @return array Array de objetos Entrada que cumplen el filtro obtenidas de la base de datos.
 	 */
 	public static function listarEntradas($filtro="1"){
 		$db=Tool::conectaBD();
 		
 		$sql="SELECT * FROM Entradas WHERE " . Tool::limpiaCadena($filtro);
 		
-		$res=Tool::ejecutaConsulta($sql, $db);
+		$aux=Tool::ejecutaConsulta($sql, $db);
+		
+		$i=0;
+		$res=[];
+		
+		foreach($aux as $a){
+		    $entrada=new Entrada();
+		    $entrada->idEntrada=$a["IdEntrada"];
+		    $entrada->idVenta=$a["IdVenta"];
+		    $entrada->idTipoEntrada=$a["IdTipoEntrada"];
+		    
+		    $res[$i]=$entrada;
+		    $i++;
+		}
 		
 		Tool::desconectaBD($db);
 		

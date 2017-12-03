@@ -93,7 +93,11 @@ class Venta{
 			'" . $v->importe . "')";
 			
 			if(Tool::ejecutaConsulta($sql, $db)){
-				Venta::borrarVenta($idVenta);
+			    $entradas=Entrada::listarEntradas("IdVenta='" . $v->IdVenta . "'");
+			    foreach ($entradas as $entrada){
+			        Entrada::archivarEntrada($entrada->IdEntrada);
+			    }
+				Venta::borrarVenta($idVenta);				
 			}
 		}
 		

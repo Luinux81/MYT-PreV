@@ -56,11 +56,15 @@ switch($accion){
 	case "duplicar":
 		Evento::duplicarEvento($idEvento);
 		break;
-		
+	
+	case "archivar": 
+	    Evento::archivarEvento($idEvento);
+	    break;
+	
 	default:
 		break;
 }
 
-header("Location:'./vista.eventos.php'");
+header("Location:./vista.eventos.php");
 
 ?>

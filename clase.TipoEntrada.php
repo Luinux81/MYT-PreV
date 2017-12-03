@@ -119,18 +119,24 @@ class TipoEntrada{
 	}
 
 	/**
-	 * Devuelve un array con todos los tipos de entrada que cumplen el filtro.
+	 * Devuelve un array de objetos TipoEntrada que cumplen el filtro.
 	 * @param string $filtro Clausula WHERE de la consulta SQL que obtiene los tipos de entrada. Su valor por defecto es 1.
-	 * @return array Array con los tipo de entrada que cumplen el filtro obtenidos de la base de datos.
+	 * @return array Array de objetos TipoEntrada que cumplen el filtro obtenidos de la base de datos.
 	 */
 	public static function listarTiposEntrada($filtro="1"){
 		$db=Tool::conectaBD();
 		
 		$sql="SELECT * FROM TiposEntrada WHERE " . Tool::limpiaCadena($filtro);
 		
-		$res=Tool::ejecutaConsulta($sql, $db);
+		$aux=Tool::ejecutaConsulta($sql, $db);
 		
-		//print_r($sql);
+		$i=0;
+		$res=[];
+		foreach ($aux as $a){
+		    $tipo=TipoEntrada::getTipoEntrada($a['IdTipoEntrada']);
+		    $res[$i]=$tipo;
+		    $i++;
+		}
 		
 		Tool::desconectaBD($db);
 		
