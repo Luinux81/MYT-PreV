@@ -195,6 +195,25 @@ class Evento{
 		return $evt;		
 	}
 	
+	public static function getVentas($idEvento){
+	   $db=Tool::conectaBD();
+	   
+	   $sql="SELECT IdVenta FROM Ventas WHERE IdEvento='" . Tool::limpiaCadena($idEvento) . "'";
+	   
+	   $aux=Tool::ejecutaConsulta($sql, $db);
+	   
+	   $i=0;
+	   $res=[];
+	   foreach($aux as $a){
+	       $res[$i]=Venta::getVenta($a['IdVenta']);
+	       $i++;
+	   }
+	   
+	   Tool::desconectaBD($db);
+	   
+	   return $res;
+	}
+	
     private static function array2Evento($array){
         $evt=new Evento();
         $evt->IdEvento=$array['IdEvento'];
