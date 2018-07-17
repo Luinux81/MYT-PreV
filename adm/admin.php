@@ -7,7 +7,7 @@ session_start();
 
 if(isset($_SESSION["username"])){
     //cabecera y menu izquierdo	
-	echo Tool::inicioDocWeb();
+	echo Tool::inicioDocWeb(true);
 	
     echo "
     		<div id='chart_div'></div>

@@ -48,6 +48,27 @@ class Tool{
 	public static function ejecutaConsulta($sql,$db){
 		$res=mysqli_query($db, $sql);
 		
+		
+		if(LOCAL_DEBUG){
+		    Tool::log("Ejecutada consulta SQL:" . $sql, LOG_FILE);
+		    
+		    $trace=debug_backtrace();		    
+		    $caller=$trace[1];
+		    
+		    $aux=$caller['function'];
+		    if(isset($caller['class'])){
+		        $aux=$caller['class'] . "->" . $aux . "Archivo:" . $caller['file'] . " Linea:" . $caller['line'];
+		    }
+		    Tool::log("Desde:" . $aux, LOG_FILE);
+    		
+    		if(!$res){
+    		    Tool::log("ERROR", LOG_FILE);
+    		}
+    		else{
+    		    Tool::log("OK->" . json_encode(mysqli_fetch_all($res)) . "\n" ,LOG_FILE);
+    		    mysqli_data_seek($res, 0);
+    		}
+		}
 		return $res;		
 	}
 
@@ -290,10 +311,15 @@ class Tool{
     			";
     }
     
-    public static function inicioDocWeb(){
-    	$aux="
- 				". Tool::cabeceraGraficos() . "
-    			<body>
+    public static function inicioDocWeb($grafico=false){
+        
+        if (!$grafico){
+            $aux="<head><LINK href='css/estilosmyt.css' rel='stylesheet' type='text/css'></head>";            
+        }
+        else{
+            $aux=Tool::cabeceraGraficos();
+        }
+    	$aux=$aux . "<body>
     				<div id='divTop'>
 	    				<div id='divTopLeft'>
 						    <a href='admin.php'><img src='cabecera.jpg' style='float: left;'></a>
