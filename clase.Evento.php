@@ -71,8 +71,8 @@ class Evento
      * Está funcion carga la información de la base de datos con id igual al parámetro de entrada en el objeto actual.
      * @param integer $id_evento 
      */
-    public function bdGetEvento($id_evento){
-        
+    public function dbGetEvento($id_evento){
+        $sql="SELECT * FROM Eventos WHERE Id=" . $id_evento;
     }
     
     /**
@@ -80,7 +80,20 @@ class Evento
      * @param Evento $evento
      */
     public function dbSetEvento($evento){
-        
+        $sql="INSERT INTO EVENTOS (nombre,descripcion,fechaInicio,fechaFin,aforo,local,direccion,ciudad,pais,gps,estadoEvento) VALUES " 
+            . "("
+            . "'" . $evento->nombre . "',"
+            . "'" . $evento->descripcion . "',"
+            . "'" . $evento->fechaInicio . "',"
+            . "'" . $evento->fechaFin . "',"
+            . "" . $evento->aforo . ","
+            . "'" . $evento->local . "',"
+            . "'" . $evento->direccion . "',"
+            . "'" . $evento->ciudad . "',"
+            . "'" . $evento->pais . "',"
+            . "'" . $evento->gps . "',"
+            . "'" . $evento->estadoEvento . "'"                               
+            . ")";
     }
     
     /**
