@@ -1,6 +1,6 @@
 <?php
 
-include_once "./clase.tool.php";
+include_once SITE_ROOT . "/clase.tool.php";
 
 class Usuario {
 
@@ -9,12 +9,11 @@ class Usuario {
     public $pass;
 
     public static function getUsuario($id){
-        $t=new Tool();
         $u=new Usuario();
-        $db=$t->conectaBD();
+        $db=Tool::conectaBD();
         $sql="SELECT * FROM Usuarios WHERE Id='" . $id . "'";
 
-        $res=$t->consulta($sql,$db);
+        $res=Tool::consulta($sql,$db);
 
         if(count($res)<1){
             $u=null;
@@ -26,32 +25,28 @@ class Usuario {
             $u->pass=$res[0]['Pass'];
         }
 
-        $t->desconectaBD($db);
+        Tool::desconectaBD($db);
         return $u;
     }
 
     public static function loginValido($name,$pass){
-        $t=new Tool();
-        $db=$t->conectaBD();
-
+        $db=Tool::conectaBD();
+        
         $sql="SELECT * FROM Usuarios WHERE Nombre='" . $name ."'";
 
-        $res=$t->consulta($sql,$db);
+        $res=Tool::ejecutaConsulta($sql,$db);
 
-        if(is_null($res)){
-            $aux=false;
-        }
-        else{
-            if(count($res)>0){
-                $storedpass=$res[0]['Pass'];
-                $aux=($pass==$storedpass);
-            }
-            else{
-                $aux=false;
-            }
+        $aux=false;
+        
+        if ($res->num_rows>0){
+        	$fila=$res->fetch_assoc();
+        	$aux=($fila['Pass']==$pass);
         }
 
-        $t->desconectaBD($db);
+        $res->free();
+        
+        Tool::desconectaBD($db);
+        
         return $aux;
 
     }

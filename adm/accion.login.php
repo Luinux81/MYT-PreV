@@ -1,17 +1,11 @@
 <?php
 
-ob_start();
+//ob_start();
 
+include_once __DIR__ . "/../config.php";
 
-include_once "../clase.usuario.php";
-include_once "../clase.tool.php";
-
-/**
- * Created by PhpStorm.
- * User: Equipo
- * Date: 1/12/14
- * Time: 11:58
- */
+include_once SITE_ROOT . "/clase.usuario.php";
+include_once SITE_ROOT . "/clase.tool.php";
 
 
 session_start();
@@ -19,14 +13,20 @@ session_start();
 $username=$_POST['username'];
 $pass=$_POST['password'];
 
-if(Usuario::loginValido($username,$pass)){
+try {
+    $aux=Usuario::loginValido($username, $pass);
+} 
+catch (Exception $e) {
+    $aux=false;
+    $_SESSION["LastError"]=$e->getMessage();
+}
+
+if($aux){
     $_SESSION["username"]=$username;
     $aux="Location:admin.php";
-    print_r("OK");
 }
 else{
     $aux="Location:login.php?err";
-    print_r("NO");
 }
 
 header($aux);
